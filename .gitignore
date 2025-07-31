@@ -1,0 +1,73 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+*.egg-info/
+
+# 出力ファイル
+output/
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.webm
+
+# Jekyll
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+vendor/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# ログ
+*.log
+
+# 環境設定
+.env
+.env.local
+
+# テスト関連
+test_result.json
+test_*.py
+
+# 一時ファイル
+*.tmp
+*.bak
+
+# Web App関連
+uploads/
+temp_sessions/
+exports/
+
+# データベース
+*.db
+*.sqlite
+*.sqlite3
+social_schedule.json
+internal_links.json
+
+# 大きなファイル
+IMG_*.MOV
+*.model
+*.pt
+*.pth
+
+# Jekyll生成ファイル
+Gemfile.lock
+
+# システム生成
+metadata.json

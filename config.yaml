@@ -1,0 +1,104 @@
+# Video Content System Configuration
+
+# Whisper設定
+whisper:
+  model: base              # tiny, base, small, medium, large
+  language: ja             # 日本語
+  device: cpu              # cpu or cuda
+  verbose: false           # 詳細ログ
+  
+# 出力設定
+output:
+  base_dir: ./output
+  jekyll_posts_dir: ./_posts
+  keep_temp_files: false
+  
+# Jekyll設定
+jekyll:
+  layout: post
+  categories:
+    - video
+    - blog
+  author: "Video Bot"
+  permalink_format: "/:year/:month/:day/:title/"
+  
+# コンテンツ生成設定
+content:
+  # ブログ記事
+  blog:
+    optimize_content: true     # BlogOptimizerを使用（デフォルト）
+    target_quality: high       # 高品質なコンテンツ生成
+    output_format: html        # HTML形式で出力（ブログ向け）
+    natural_japanese: true     # 自然な日本語に変換
+    min_section_length: 200    # セクション最小文字数
+    max_section_length: 500    # セクション最大文字数
+    add_timestamps: true       # タイムスタンプ追加
+    add_toc: true             # 目次追加
+    generate_images: true      # 画像自動生成を有効化
+    generate_featured_image: true  # アイキャッチ画像生成
+    generate_section_images: true  # セクション画像生成
+    image_settings:
+      primary_color: "#2c3e50"
+      secondary_color: "#3498db"
+      accent_color: "#e74c3c"
+      text_color: "#ffffff"
+      background_color: "#1a1a2e"
+    
+  # YouTube
+  youtube:
+    add_chapters: true         # チャプター追加
+    max_description_length: 5000
+    default_tags:
+      - 動画
+      - ブログ
+      - 日本語
+    
+  # X (Twitter)
+  twitter:
+    max_length: 140
+    add_hashtags: true
+    max_hashtags: 3
+    
+# サムネイル設定
+thumbnail:
+  width: 1280
+  height: 720
+  background_color: "#1a1a2e"
+  text_color: "#ffffff"
+  accent_color: "#f39c12"
+  font_size_title: 80
+  font_size_subtitle: 40
+  
+# テンプレート設定
+templates:
+  blog: templates/blog_post.j2
+  youtube: templates/youtube_description.j2
+  twitter: templates/twitter_post.j2
+  
+# ソーシャルメディア設定
+social_media:
+  # X (Twitter) 投稿設定
+  x:
+    max_length: 140            # 日本語文字数制限
+    thread_mode: true          # スレッド投稿対応
+    include_link: true         # ブログリンク含む
+    hashtag_strategy: smart    # スマートハッシュタグ選択
+    auto_post: false           # 自動投稿（false=手動コピペ）
+    
+  # スケジューラー設定
+  schedule_file: social_schedule.json
+  
+# 内部リンク設定
+internal_linking:
+  posts_directory: _posts
+  link_database: internal_links.json
+  similarity_threshold: 0.6    # 関連記事判定閾値
+  max_related_posts: 3         # 最大関連記事数
+  enable_backlinks: true       # 逆リンク機能
+  update_existing_posts: true  # 既存記事の更新
+
+# 処理設定
+processing:
+  parallel_jobs: 2
+  chunk_size: 30               # 30秒ごとに処理（大きな動画用）
+  auto_cleanup: true           # 一時ファイル自動削除

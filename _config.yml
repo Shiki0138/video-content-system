@@ -1,0 +1,53 @@
+# Welcome to Jekyll!
+#
+# This config file is meant for settings that affect your whole blog, values
+# which you are expected to set up once and rarely edit after that.
+
+title: 動画ブログ - Video Content System
+email: your-email@example.com
+description: >- # this means to ignore newlines until "baseurl:"
+  Whisperで動画を文字起こしして自動生成されたブログです。
+  動画の内容をテキストで読むことができます。
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "" # the base hostname & protocol for your site, e.g. http://example.com
+
+# Build settings
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# Permalink設定
+permalink: /:year/:month/:day/:title/
+
+# デフォルト設定
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      comments: true
+
+# Exclude from processing
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/
+  - venv/
+  - "*.py"
+  - "*.sh"
+  - requirements.txt
+  - README.md
+  - setup.py
+  - config.yaml
+  - modules/
+  - templates/
+  - logs/
+  - cache/
+  - uploads/
