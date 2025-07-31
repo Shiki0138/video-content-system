@@ -76,6 +76,75 @@ def install_dependencies():
     return True
 
 
+def install_pillow():
+    """Pillowをインストール（サムネイル生成用）"""
+    print("\n🎨 Pillow（画像処理ライブラリ）をインストール中...")
+    
+    try:
+        # まずPillowがインストールされているか確認
+        import PIL
+        print("✅ Pillowは既にインストールされています")
+        print(f"  バージョン: {PIL.__version__}")
+        return True
+    except ImportError:
+        pass
+    
+    # OSを検出
+    system = platform.system()
+    
+    # macOSの場合の特別な処理
+    if system == "Darwin":
+        print("🍎 macOS検出: 適切な方法でインストールします...")
+        
+        # まずvenvでの実行を推奨
+        if not hasattr(sys, 'real_prefix') and not (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix):
+            print("\n⚠️  macOSでは仮想環境の使用を推奨します:")
+            print("    python3 -m venv venv")
+            print("    source venv/bin/activate")
+            print("    python setup.py")
+            
+            # それでも続行するか確認
+            response = input("\n仮想環境なしで続行しますか？ (y/N): ")
+            if response.lower() != 'y':
+                print("セットアップを中止しました")
+                return False
+        
+        # --break-system-packagesオプション付きでインストール
+        try:
+            subprocess.run([
+                sys.executable, "-m", "pip", "install", 
+                "--user", "--break-system-packages", "pillow"
+            ], check=True)
+            print("✅ Pillowをユーザー領域にインストール完了")
+            return True
+        except subprocess.CalledProcessError:
+            print("⚠️  pipでのインストールに失敗しました")
+            
+        # Homebrewでインストールを試みる
+        try:
+            subprocess.run(["brew", "install", "pillow"], check=True)
+            print("✅ HomebrewでPillowをインストール完了")
+            return True
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            print("⚠️  Homebrewでのインストールも失敗しました")
+    
+    # 通常のpipインストール（Linux/Windows）
+    try:
+        subprocess.run([sys.executable, "-m", "pip", "install", "pillow"], check=True)
+        print("✅ Pillowのインストール完了")
+        return True
+    except subprocess.CalledProcessError:
+        print("❌ Pillowのインストールに失敗しました")
+        print("\n手動でインストールしてください:")
+        if system == "Darwin":
+            print("  brew install pillow")
+            print("  または")
+            print("  python3 -m pip install --user --break-system-packages pillow")
+        else:
+            print("  pip install pillow")
+        return False
+
+
 def test_whisper():
     """Whisperの動作テスト"""
     print("\n🎤 Whisperテスト...")
@@ -100,7 +169,11 @@ def create_directories():
         'templates',
         '_posts',
         'cache',
-        'uploads'
+        'uploads',
+        'temp_sessions',
+        'web_static',
+        'web_templates',
+        'fonts'  # カスタムフォント用
     ]
     
     for dir_name in directories:
@@ -178,10 +251,14 @@ def print_next_steps():
     print("  1. 単一動画を処理:")
     print("     python main.py video.mp4 --title '動画タイトル'")
     print()
-    print("  2. 複数動画を一括処理:")
+    print("  2. Webインターフェースで処理:")
+    print("     python web_app.py")
+    print("     ブラウザで http://localhost:8003 を開く")
+    print()
+    print("  3. 複数動画を一括処理:")
     print("     python main.py ./videos/ --batch")
     print()
-    print("  3. Whisperモデルを指定:")
+    print("  4. Whisperモデルを指定:")
     print("     python main.py video.mp4 --model small")
     print()
     print("📚 Whisperモデル一覧:")
@@ -190,6 +267,11 @@ def print_next_steps():
     print("  - small  : 高精度")
     print("  - medium : より高精度")
     print("  - large  : 最高精度")
+    print()
+    print("🎨 サムネイル生成について:")
+    print("  - 日本語フォントが自動検出されます")
+    print("  - 3つの戦略的バリエーションが生成されます")
+    print("  - YouTubeに最適化されたデザイン")
     print()
     print("💡 ヒント:")
     print("  - 初回実行時はモデルのダウンロードに時間がかかります")
@@ -221,6 +303,11 @@ def main():
     try:
         if not install_dependencies():
             return 1
+        
+        # Pillowをインストール
+        if not install_pillow():
+            print("\n⚠️ Pillowのインストールに失敗しました")
+            print("サムネイル生成機能は利用できませんが、その他の機能は正常に動作します")
         
         if not test_whisper():
             print("\n⚠️ Whisperのテストに失敗しましたが、セットアップを続行します")

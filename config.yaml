@@ -69,6 +69,11 @@ thumbnail:
   font_size_title: 80
   font_size_subtitle: 40
   
+  # Stable Diffusion設定
+  use_stable_diffusion: true
+  sd_provider: replicate  # 選択肢: replicate, huggingface, local
+  # sd_api_key: ${REPLICATE_API_TOKEN}  # 環境変数から読み込み
+  
 # テンプレート設定
 templates:
   blog: templates/blog_post.j2

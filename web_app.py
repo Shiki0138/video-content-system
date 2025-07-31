@@ -310,33 +310,69 @@ async def process_content(request: Request):
 
 @app.post("/api/process/thumbnail")
 async def process_thumbnail(request: Request):
-    """サムネイル生成処理"""
+    """バイラルサムネイル生成処理"""
     
     try:
         data = await request.json()
         session_id = data.get('session_id')
-        thumbnail_style = data.get('style', 'modern')  # modern, minimal, vibrant
         
         session = session_manager.get_session(session_id)
         if not session:
             raise HTTPException(status_code=404, detail="セッションが見つかりません")
         
-        title = session['data']['title']
-        content = session['data']['content']
+        title = session['data'].get('title', '動画タイトル')
+        transcript_data = session['data']['transcript']
         
-        # サムネイル生成
-        logger.info(f"🎨 サムネイル生成開始: {thumbnail_style}")
+        # バイラルサムネイル生成
+        logger.info(f"🎨 バイラルサムネイル生成開始: {title}")
         
         # 出力ディレクトリ
         output_dir = Path("temp_sessions") / session_id
         output_dir.mkdir(parents=True, exist_ok=True)
         
-        # サムネイル作成
-        thumbnail_path = processor.thumbnail_creator.create(
-            title=title,
-            subtitle=content['thumbnail'].get('subtitle', ''),
-            output_path=output_dir / "thumbnail.png"
-        )
+        # Stable Diffusion対応チェック
+        use_stable_diffusion = CONFIG.get('thumbnail', {}).get('use_stable_diffusion', True)
+        
+        if use_stable_diffusion:
+            try:
+                # Stable Diffusionサムネイル生成を試みる
+                from modules.stable_diffusion_thumbnail import StableDiffusionThumbnailCreator, StableDiffusionSetup
+                
+                # 環境チェック
+                env_check = StableDiffusionSetup.check_environment()
+                logger.info(f"SD環境チェック: {env_check}")
+                
+                if any(env_check.values()):
+                    sd_creator = StableDiffusionThumbnailCreator(CONFIG.get('thumbnail', {}))
+                    thumbnail_variants = sd_creator.create_viral_thumbnails(
+                        title=title,
+                        transcript_data=transcript_data,
+                        output_dir=output_dir
+                    )
+                    logger.info("✓ Stable Diffusionでサムネイル生成完了")
+                else:
+                    raise Exception("Stable Diffusion環境が利用できません")
+                    
+            except Exception as e:
+                logger.warning(f"Stable Diffusion使用不可: {e}")
+                logger.info("フォールバック: 従来のサムネイル生成を使用")
+                # フォールバック：従来のバイラルサムネイル作成器を使用
+                from modules.viral_thumbnail_creator import ViralThumbnailCreator
+                viral_creator = ViralThumbnailCreator(CONFIG.get('thumbnail', {}))
+                thumbnail_variants = viral_creator.create_viral_options(
+                    title=title,
+                    transcript_data=transcript_data,
+                    output_dir=output_dir
+                )
+        else:
+            # 従来のバイラルサムネイル作成器を使用
+            from modules.viral_thumbnail_creator import ViralThumbnailCreator
+            viral_creator = ViralThumbnailCreator(CONFIG.get('thumbnail', {}))
+            thumbnail_variants = viral_creator.create_viral_options(
+                title=title,
+                transcript_data=transcript_data,
+                output_dir=output_dir
+            )
         
         # セッション更新
         session_manager.update_session(session_id, {
@@ -344,27 +380,24 @@ async def process_thumbnail(request: Request):
             'steps_completed': session['steps_completed'] + ['thumbnail'],
             'files': {
                 **session['files'],
-                'thumbnail': str(thumbnail_path)
+                'thumbnails': [variant['path'] for variant in thumbnail_variants]
             },
             'data': {
                 **session['data'],
-                'thumbnail_style': thumbnail_style,
+                'thumbnail_variants': thumbnail_variants,
                 'thumbnail_time': datetime.now().isoformat()
             }
         })
         
         return JSONResponse({
             "success": True,
-            "message": "サムネイル生成完了",
-            "thumbnail": {
-                "path": str(thumbnail_path),
-                "style": thumbnail_style,
-                "url": f"/api/file/{session_id}/thumbnail.png"
-            }
+            "message": "バイラルサムネイル生成完了",
+            "thumbnail_variants": thumbnail_variants,
+            "total_variants": len(thumbnail_variants)
         })
         
     except Exception as e:
-        logger.error(f"サムネイル生成エラー: {e}")
+        logger.error(f"バイラルサムネイル生成エラー: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/session/{session_id}")

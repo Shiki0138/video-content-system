@@ -32,10 +32,10 @@
         <header class="app-header">
             <div class="header-content">
                 <h1>🌟 VideoAI Studio</h1>
-                <p class="tagline">Neural-Powered Content Generation</p>
+                <p class="tagline">次世代AI動画コンテンツ自動生成システム</p>
                 <div class="ai-indicator">
                     <span class="ai-pulse"></span>
-                    <span>Quantum AI Active</span>
+                    <span>量子AI 稼働中</span>
                 </div>
             </div>
         </header>
@@ -48,46 +48,50 @@
             <div class="progress-steps">
                 <div class="step active" data-step="1">
                     <div class="step-icon">🚀</div>
-                    <div class="step-label">Neural Upload</div>
+                    <div class="step-label">動画アップロード</div>
                 </div>
                 <div class="step" data-step="2">
                     <div class="step-icon">🧠</div>
-                    <div class="step-label">AI Processing</div>
+                    <div class="step-label">AI音声解析</div>
                 </div>
                 <div class="step" data-step="3">
                     <div class="step-icon">✨</div>
-                    <div class="step-label">Synthesis</div>
+                    <div class="step-label">キャプション生成</div>
                 </div>
                 <div class="step" data-step="4">
-                    <div class="step-icon">🎯</div>
-                    <div class="step-label">Generation</div>
+                    <div class="step-icon">🎨</div>
+                    <div class="step-label">サムネイル生成</div>
                 </div>
                 <div class="step" data-step="5">
-                    <div class="step-icon">🎨</div>
-                    <div class="step-label">Rendering</div>
+                    <div class="step-icon">🎯</div>
+                    <div class="step-label">ブログ生成</div>
                 </div>
                 <div class="step" data-step="6">
+                    <div class="step-icon">🔮</div>
+                    <div class="step-label">X投稿生成</div>
+                </div>
+                <div class="step" data-step="7">
                     <div class="step-icon">💫</div>
-                    <div class="step-label">Export</div>
+                    <div class="step-label">エクスポート</div>
                 </div>
             </div>
         </div>
 
         <!-- Holographic Main Content -->
         <main class="main-content">
-            <!-- Step 1: Neural Upload Interface -->
+            <!-- Step 1: 動画アップロード -->
             <div class="wizard-step active" id="step1">
                 <div class="step-content">
-                    <h2>🚀 Neural Video Upload</h2>
-                    <p class="step-description">Initialize quantum transfer protocol for video data ingestion</p>
+                    <h2>🚀 Video Upload</h2>
+                    <p class="step-description">動画ファイルをアップロードして量子コンテンツ生成を開始します</p>
                     
                     <div class="upload-zone" id="uploadZone">
                         <div class="upload-content">
                             <div class="upload-icon">🎬</div>
-                            <h3>Quantum Data Transfer Zone</h3>
-                            <p>Drop video file to begin neural processing</p>
-                            <p>or <button type="button" id="selectFileBtn" class="btn-link">quantum select</button></p>
-                            <small>Compatible: MP4, MOV, AVI, MKV • Max: 2GB</small>
+                            <h3>動画ファイルをここにドロップ</h3>
+                            <p>動画をドロップしてAI処理を開始</p>
+                            <p>または <button type="button" id="selectFileBtn" class="btn-link">ファイルを選択</button></p>
+                            <small>対応形式: MP4, MOV, AVI, MKV • 最大: 2GB</small>
                         </div>
                         <input type="file" id="videoInput" accept="video/*" style="display: none;">
                     </div>
@@ -102,17 +106,17 @@
                         </div>
                         <button type="button" class="btn-primary" id="uploadBtn">
                             <span class="btn-icon">⚡</span>
-                            Initiate Transfer
+                            アップロード開始
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Step 2: AI Neural Processing -->
+            <!-- Step 2: AI音声解析 -->
             <div class="wizard-step" id="step2">
                 <div class="step-content">
                     <h2>🧠 Neural Audio Analysis</h2>
-                    <p class="step-description">Advanced AI neural networks analyzing audio patterns</p>
+                    <p class="step-description">高度なAIニューラルネットワークが音声パターンを解析中</p>
                     
                     <div class="processing-container">
                         <div class="ai-visualization">
@@ -126,175 +130,236 @@
                         </div>
                         
                         <div class="processing-status">
-                            <div class="status-text" id="transcribeStatus">Neural pattern recognition active...</div>
-                            <div class="processing-details" id="transcribeDetails">Quantum computing cores engaged</div>
+                            <div class="status-text" id="transcribeStatus">ニューラルパターン認識中...</div>
+                            <div class="processing-details" id="transcribeDetails">量子コンピューティングコア稼働中</div>
                         </div>
                         
                         <button type="button" class="btn-primary" id="transcribeBtn">
                             <span class="btn-icon">🔮</span>
-                            Activate Neural Processing
+                            AI音声解析開始
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Step 3: Holographic Caption Synthesis -->
+            <!-- Step 3: キャプション生成 -->
             <div class="wizard-step" id="step3">
                 <div class="step-content">
                     <h2>✨ Caption Synthesis Matrix</h2>
-                    <p class="step-description">Select neural pattern for holographic caption generation</p>
+                    <p class="step-description">ホログラフィックキャプション生成のニューラルパターンを選択</p>
                     
                     <div class="caption-options">
                         <div class="option-card" data-style="standard">
                             <div class="option-icon">🔮</div>
-                            <h3>Standard Neural</h3>
-                            <p>Balanced cognitive processing pattern</p>
+                            <h3>スタンダード</h3>
+                            <p>バランス型認知処理パターン</p>
                             <div class="option-preview">
-                                Neural pathways optimize for standard comprehension flow
+                                読みやすい標準的なキャプション形式で生成します
                             </div>
                         </div>
                         
                         <div class="option-card" data-style="dynamic">
                             <div class="option-icon">⚡</div>
-                            <h3>Dynamic Pulse</h3>
-                            <p>High-frequency synaptic bursts</p>
+                            <h3>ダイナミック</h3>
+                            <p>高周波シナプス爆発型</p>
                             <div class="option-preview">
-                                Rapid-fire<br>neural<br>transmission
+                                短いセグメント<br>高速<br>動的表示
                             </div>
                         </div>
                         
                         <div class="option-card" data-style="minimal">
                             <div class="option-icon">🌌</div>
-                            <h3>Quantum Minimal</h3>
-                            <p>Simplified quantum coherence pattern</p>
+                            <h3>ミニマル</h3>
+                            <p>量子コヒーレンス簡素型</p>
                             <div class="option-preview">
-                                Elegant neural streams flowing through quantum space with minimal interference patterns
+                                シンプルで長めのキャプションで、量子空間を流れるような自然な表示
                             </div>
                         </div>
                     </div>
                     
                     <button type="button" class="btn-primary disabled" id="captionBtn">
                         <span class="btn-icon">💎</span>
-                        Initialize Caption Matrix
+                        キャプション生成開始
                     </button>
                 </div>
             </div>
 
-            <!-- Step 4: Quantum Content Generation -->
+            <!-- Step 4: サムネイル生成 -->
             <div class="wizard-step" id="step4">
                 <div class="step-content">
-                    <h2>🎯 Quantum Content Generation</h2>
-                    <p class="step-description">Multi-dimensional content synthesis across parallel realities</p>
+                    <h2>🎨 Viral Thumbnail Generator</h2>
+                    <p class="step-description">YouTubeでついついクリックしたくなる戦略的サムネイルを3つ生成</p>
+                    
+                    <div class="viral-info">
+                        <div class="info-card">
+                            <div class="info-icon">🧠</div>
+                            <h4>心理学ベース</h4>
+                            <p>視聴者の心理的トリガーを分析してデザイン決定</p>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon">🎯</div>
+                            <h4>動的戦略</h4>
+                            <p>動画内容に応じて最適なアプローチを自動選択</p>
+                        </div>
+                        <div class="info-card">
+                            <div class="info-icon">📊</div>
+                            <h4>YouTube最適化</h4>
+                            <p>クリック率向上のための視覚的最適化</p>
+                        </div>
+                    </div>
+                    
+                    <div class="thumbnail-generation-preview" id="thumbnailPreview" style="display: none;">
+                        <h4>生成された戦略的バリエーション</h4>
+                        <div class="thumbnail-variants" id="thumbnailVariants">
+                            <!-- 動的に生成される3つのバリエーション -->
+                        </div>
+                    </div>
+                    
+                    <div class="generation-status" id="thumbnailStatus" style="display: none;">
+                        <div class="status-indicator">
+                            <div class="pulse-dot"></div>
+                            <span class="status-text">AI戦略分析中...</span>
+                        </div>
+                        <div class="progress-details">
+                            <div class="detail-item">
+                                <span class="detail-icon">🎯</span>
+                                <span class="detail-text" id="analysisStep">動画内容を心理学的に分析中</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn-primary disabled" id="thumbnailBtn">
+                        <span class="btn-icon">🚀</span>
+                        バイラルサムネイル生成開始
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 5: ブログ生成 -->
+            <div class="wizard-step" id="step5">
+                <div class="step-content">
+                    <h2>🎯 Blog Content Matrix</h2>
+                    <p class="step-description">AI意図解析によるインテリジェントブログ記事を生成</p>
                     
                     <div class="content-form">
                         <div class="form-group">
-                            <label for="videoTitle">Quantum Title Vector</label>
-                            <input type="text" id="videoTitle" class="form-input" placeholder="Neural transmission identifier">
+                            <label for="videoTitle">動画タイトル</label>
+                            <input type="text" id="videoTitle" class="form-input" placeholder="例: VideoAI Studio の使い方解説">
                         </div>
                         
-                        <div class="content-types">
-                            <div class="content-type">
-                                <div class="type-icon">🌐</div>
-                                <h3>Neural Blog</h3>
-                                <p>Holographic article</p>
+                        <div class="blog-features">
+                            <div class="feature-item">
+                                <div class="feature-icon">🧠</div>
+                                <h3>意図解析</h3>
+                                <p>発言意図を理解しリライト</p>
                             </div>
-                            <div class="content-type">
-                                <div class="type-icon">🔮</div>
-                                <h3>X Quantum</h3>
-                                <p>Multi-verse posts</p>
+                            <div class="feature-item">
+                                <div class="feature-icon">🌐</div>
+                                <h3>SEO最適化</h3>
+                                <p>検索エンジン対応HTML</p>
                             </div>
-                            <div class="content-type">
-                                <div class="type-icon">🚀</div>
-                                <h3>YouTube Matrix</h3>
-                                <p>Dimensional description</p>
+                            <div class="feature-item">
+                                <div class="feature-icon">🔗</div>
+                                <h3>内部リンク</h3>
+                                <p>関連記事への双方向リンク</p>
                             </div>
                         </div>
                         
-                        <button type="button" class="btn-primary" id="contentBtn">
-                            <span class="btn-icon">🌟</span>
-                            Activate Generation Matrix
+                        <button type="button" class="btn-primary" id="blogBtn">
+                            <span class="btn-icon">📝</span>
+                            ブログ記事生成開始
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Step 5: Holographic Rendering -->
-            <div class="wizard-step" id="step5">
+            <!-- Step 6: X投稿生成 -->
+            <div class="wizard-step" id="step6">
                 <div class="step-content">
-                    <h2>🎨 Holographic Rendering</h2>
-                    <p class="step-description">Quantum visual synthesis through dimensional rendering</p>
+                    <h2>🔮 Social Media Synthesis</h2>
+                    <p class="step-description">マルチバリエーションX投稿を戦略的に生成</p>
                     
-                    <div class="thumbnail-options">
-                        <div class="thumbnail-card" data-style="modern">
-                            <div class="thumbnail-preview modern-preview">
-                                <div class="preview-title">Neural Interface</div>
-                                <div class="preview-subtitle">Quantum Design</div>
-                            </div>
-                            <h3>Modern Hologram</h3>
-                            <p>Dimensional gradient fields</p>
+                    <div class="x-post-options">
+                        <div class="x-style-card">
+                            <div class="style-icon">⚡</div>
+                            <h3>インパクト型</h3>
+                            <p>注目を集める短文</p>
                         </div>
-                        
-                        <div class="thumbnail-card" data-style="minimal">
-                            <div class="thumbnail-preview minimal-preview">
-                                <div class="preview-title">Quantum Minimal</div>
-                                <div class="preview-subtitle">Pure Form</div>
-                            </div>
-                            <h3>Quantum Minimal</h3>
-                            <p>Essence extraction protocol</p>
+                        <div class="x-style-card">
+                            <div class="style-icon">📚</div>
+                            <h3>情報提供型</h3>
+                            <p>価値ある情報を要約</p>
                         </div>
-                        
-                        <div class="thumbnail-card" data-style="vibrant">
-                            <div class="thumbnail-preview vibrant-preview">
-                                <div class="preview-title">Energy Matrix</div>
-                                <div class="preview-subtitle">Power Core</div>
-                            </div>
-                            <h3>Energy Vibrant</h3>
-                            <p>Quantum color spectrum</p>
+                        <div class="x-style-card">
+                            <div class="style-icon">💡</div>
+                            <h3>洞察共有型</h3>
+                            <p>気づきや学びを表現</p>
+                        </div>
+                        <div class="x-style-card">
+                            <div class="style-icon">❓</div>
+                            <h3>質問喚起型</h3>
+                            <p>エンゲージメント促進</p>
+                        </div>
+                        <div class="x-style-card">
+                            <div class="style-icon">🎯</div>
+                            <h3>行動促進型</h3>
+                            <p>具体的なアクション誘導</p>
                         </div>
                     </div>
                     
-                    <button type="button" class="btn-primary disabled" id="thumbnailBtn">
-                        <span class="btn-icon">🌈</span>
-                        Begin Holographic Render
+                    <div class="x-features">
+                        <div class="feature-item">
+                            <div class="feature-icon">🔗</div>
+                            <p>ブログ・YouTube連携</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">📊</div>
+                            <p>エンゲージメント最適化</p>
+                        </div>
+                    </div>
+                    
+                    <button type="button" class="btn-primary" id="xPostBtn">
+                        <span class="btn-icon">🚀</span>
+                        X投稿バリエーション生成
                     </button>
                 </div>
             </div>
 
-            <!-- Step 6: Quantum Export Portal -->
-            <div class="wizard-step" id="step6">
+            <!-- Step 7: エクスポート -->
+            <div class="wizard-step" id="step7">
                 <div class="step-content">
                     <h2>💫 Quantum Export Portal</h2>
-                    <p class="step-description">Final synthesis complete • Dimensional transfer ready</p>
+                    <p class="step-description">最終合成完了 • 次元転送準備完了</p>
                     
                     <div class="export-summary">
-                        <h3>Neural Generation Summary</h3>
+                        <h3>AI生成サマリー</h3>
                         <div class="summary-grid">
                             <div class="summary-item">
                                 <div class="summary-icon">🌐</div>
                                 <div class="summary-info">
-                                    <div class="summary-title">Neural Blog</div>
-                                    <div class="summary-details" id="blogSummary">Quantum synthesis in progress...</div>
+                                    <div class="summary-title">ブログ記事</div>
+                                    <div class="summary-details" id="blogSummary">量子合成処理中...</div>
                                 </div>
                             </div>
                             <div class="summary-item">
                                 <div class="summary-icon">🔮</div>
                                 <div class="summary-info">
-                                    <div class="summary-title">X Quantum</div>
-                                    <div class="summary-details" id="xSummary">Multi-verse generation...</div>
+                                    <div class="summary-title">X投稿</div>
+                                    <div class="summary-details" id="xSummary">マルチバース生成中...</div>
                                 </div>
                             </div>
                             <div class="summary-item">
                                 <div class="summary-icon">🚀</div>
                                 <div class="summary-info">
-                                    <div class="summary-title">YouTube Matrix</div>
-                                    <div class="summary-details" id="youtubeSummary">Dimensional processing...</div>
+                                    <div class="summary-title">YouTube説明文</div>
+                                    <div class="summary-details" id="youtubeSummary">次元処理中...</div>
                                 </div>
                             </div>
                             <div class="summary-item">
                                 <div class="summary-icon">🎨</div>
                                 <div class="summary-info">
-                                    <div class="summary-title">Holographic Render</div>
-                                    <div class="summary-details" id="thumbnailSummary">Visual synthesis...</div>
+                                    <div class="summary-title">サムネイル</div>
+                                    <div class="summary-details" id="thumbnailSummary">視覚合成中...</div>
                                 </div>
                             </div>
                         </div>
@@ -304,28 +369,28 @@
                         <label class="checkbox-label">
                             <input type="checkbox" id="exportBlog" checked>
                             <span class="checkmark"></span>
-                            Neural Blog Matrix
+                            ブログ記事（Jekyll形式）
                         </label>
                         <label class="checkbox-label">
                             <input type="checkbox" id="exportX" checked>
                             <span class="checkmark"></span>
-                            X Quantum Posts
+                            X投稿（5種類バリエーション）
                         </label>
                         <label class="checkbox-label">
                             <input type="checkbox" id="exportYoutube" checked>
                             <span class="checkmark"></span>
-                            YouTube Dimension
+                            YouTube説明文
                         </label>
                     </div>
                     
                     <div class="export-actions">
                         <button type="button" class="btn-secondary" id="previewBtn">
                             <span class="btn-icon">👁️</span>
-                            Neural Preview
+                            プレビュー確認
                         </button>
                         <button type="button" class="btn-primary" id="exportBtn">
                             <span class="btn-icon">🌌</span>
-                            Export to Reality
+                            現実世界にエクスポート
                         </button>
                     </div>
                 </div>
@@ -334,7 +399,7 @@
 
         <!-- Quantum Footer -->
         <footer class="app-footer">
-            <p>🌟 Powered by Quantum Neural Networks | 💫 Claude Code Max Integration | ⚡ Next-Gen AI Studio</p>
+            <p>🌟 量子ニューラルネットワーク駆動 | 💫 Claude Code Max統合 | ⚡ 次世代AIスタジオ</p>
         </footer>
     </div>
 
