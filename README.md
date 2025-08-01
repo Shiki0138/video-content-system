@@ -23,8 +23,13 @@
 ### 1. インストール
 
 ```bash
+# デスクトップに移動
+cd ~/Desktop
+
 # リポジトリをクローン
 git clone https://github.com/Shiki0138/video-content-system.git
+
+# プロジェクトディレクトリに移動
 cd video-content-system
 
 # セットアップ実行
