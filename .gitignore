@@ -40,6 +40,14 @@ Thumbs.db
 .env
 .env.local
 
+# 機密情報を含む設定ファイル（重要：GitHubにコミットしない）
+config.local.yaml
+*.local.yaml
+.api_keys
+secrets.yaml
+credentials.json
+api_tokens.yaml
+
 # テスト関連
 test_result.json
 test_*.py

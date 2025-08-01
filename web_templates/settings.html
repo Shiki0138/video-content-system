@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoAI Studio - 設定</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --quantum-primary: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            --neural-secondary: linear-gradient(45deg, #00f5ff, #ff00f5, #f5ff00, #00ff5f);
+            --quantum-bg: radial-gradient(ellipse at center, #0a0a23 0%, #000000 70%);
+            --neural-text: #e8f4fd;
+            --success-quantum: #06ffa5;
+            --warning-neural: #ffbe0b;
+            --error-holographic: #ff006e;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(102, 126, 234, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--quantum-bg);
+            color: var(--neural-text);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            background: var(--quantum-primary);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: quantum-flow 3s ease-in-out infinite alternate;
+            margin-bottom: 20px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: rgba(232, 244, 253, 0.8);
+        }
+
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .settings-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 40px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .settings-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(102, 126, 234, 0.6);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.2);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--neural-text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title .icon {
+            font-size: 1.8rem;
+        }
+
+        .provider-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+        }
+
+        .provider-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .provider-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--neural-text);
+        }
+
+        .status-indicator {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-configured {
+            background: rgba(6, 255, 165, 0.2);
+            color: var(--success-quantum);
+            border: 1px solid var(--success-quantum);
+        }
+
+        .status-not-configured {
+            background: rgba(255, 190, 11, 0.2);
+            color: var(--warning-neural);
+            border: 1px solid var(--warning-neural);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--neural-text);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 10px;
+            color: var(--neural-text);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: rgba(102, 126, 234, 0.6);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: rgba(232, 244, 253, 0.5);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: var(--quantum-primary);
+            color: #000;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--neural-text);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(102, 126, 234, 0.5);
+        }
+
+        .btn-test {
+            background: rgba(6, 255, 165, 0.2);
+            color: var(--success-quantum);
+            border: 1px solid var(--success-quantum);
+        }
+
+        .btn-test:hover {
+            background: rgba(6, 255, 165, 0.3);
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: rgba(232, 244, 253, 0.6);
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .api-guide {
+            background: rgba(6, 255, 165, 0.1);
+            border: 1px solid var(--success-quantum);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .api-guide h3 {
+            color: var(--success-quantum);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .api-guide ol {
+            margin-left: 20px;
+            line-height: 1.6;
+        }
+
+        .api-guide a {
+            color: var(--success-quantum);
+            text-decoration: none;
+        }
+
+        .api-guide a:hover {
+            text-decoration: underline;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: var(--success-quantum);
+            color: #000;
+        }
+
+        .notification.error {
+            background: var(--error-holographic);
+        }
+
+        @keyframes quantum-flow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @media (max-width: 768px) {
+            .settings-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .settings-card {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>⚙️ VideoAI Studio 設定</h1>
+            <p>Stable Diffusion APIを設定して、YouTube最適化サムネイルを生成</p>
+        </div>
+
+        <!-- API設定ガイド -->
+        <div class="api-guide">
+            <h3>🔑 API設定ガイド</h3>
+            <p style="margin-bottom: 15px;">高品質なYouTubeサムネイル生成のために、以下のいずれかのAPIを設定してください：</p>
+            <ol>
+                <li><strong>Replicate API</strong> - 簡単設定、従量課金 → <a href="https://replicate.com/account/api-tokens" target="_blank">APIキー取得</a></li>
+                <li><strong>Hugging Face API</strong> - 無料利用枠あり → <a href="https://huggingface.co/settings/tokens" target="_blank">APIキー取得</a></li>
+                <li><strong>ローカル実行</strong> - Automatic1111 WebUI必要 → <a href="https://github.com/AUTOMATIC1111/stable-diffusion-webui" target="_blank">セットアップガイド</a></li>
+            </ol>
+        </div>
+
+        <div class="settings-grid">
+            <!-- Replicate API設定 -->
+            <div class="settings-card">
+                <div class="card-title">
+                    <span class="icon">🚀</span>
+                    Replicate API
+                </div>
+                
+                <div class="provider-section">
+                    <div class="provider-header">
+                        <span class="provider-name">Replicate</span>
+                        <span id="replicate-status" class="status-indicator status-not-configured">未設定</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="replicate-token">API Token</label>
+                        <input type="password" id="replicate-token" class="form-input" 
+                               placeholder="r8_xxxxxxxxxxxxxxxxxxxxxxxxxx">
+                        <div class="help-text">
+                            Replicateアカウントから取得したAPIトークン（r8_で始まる）
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="replicate-model">モデル</label>
+                        <input type="text" id="replicate-model" class="form-input" 
+                               value="stability-ai/stable-diffusion:27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478">
+                        <div class="help-text">
+                            使用するStable Diffusionモデル
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="saveSettings('replicate')">
+                            💾 保存
+                        </button>
+                        <button class="btn btn-test" onclick="testConnection('replicate')">
+                            🔍 接続テスト
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hugging Face API設定 -->
+            <div class="settings-card">
+                <div class="card-title">
+                    <span class="icon">🤗</span>
+                    Hugging Face API
+                </div>
+                
+                <div class="provider-section">
+                    <div class="provider-header">
+                        <span class="provider-name">Hugging Face</span>
+                        <span id="huggingface-status" class="status-indicator status-not-configured">未設定</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="huggingface-token">API Token</label>
+                        <input type="password" id="huggingface-token" class="form-input" 
+                               placeholder="hf_xxxxxxxxxxxxxxxxxxxxxxxxxx">
+                        <div class="help-text">
+                            Hugging Faceアカウントから取得したAPIトークン（hf_で始まる）
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="huggingface-model">モデル</label>
+                        <input type="text" id="huggingface-model" class="form-input" 
+                               value="stabilityai/stable-diffusion-2-1">
+                        <div class="help-text">
+                            使用するHugging Faceモデル
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="saveSettings('huggingface')">
+                            💾 保存
+                        </button>
+                        <button class="btn btn-test" onclick="testConnection('huggingface')">
+                            🔍 接続テスト
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ローカル設定 -->
+            <div class="settings-card">
+                <div class="card-title">
+                    <span class="icon">🖥️</span>
+                    ローカル実行
+                </div>
+                
+                <div class="provider-section">
+                    <div class="provider-header">
+                        <span class="provider-name">Local Stable Diffusion</span>
+                        <span id="local-status" class="status-indicator status-not-configured">未設定</span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="local-url">サーバーURL</label>
+                        <input type="text" id="local-url" class="form-input" 
+                               value="http://localhost:7860">
+                        <div class="help-text">
+                            Automatic1111 WebUIのURL
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="local-model">モデルパス（オプション）</label>
+                        <input type="text" id="local-model" class="form-input" 
+                               placeholder="/path/to/your/model.safetensors">
+                        <div class="help-text">
+                            ローカルモデルファイルのパス（空欄でデフォルトモデル使用）
+                        </div>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="saveSettings('local')">
+                            💾 保存
+                        </button>
+                        <button class="btn btn-test" onclick="testConnection('local')">
+                            🔍 接続テスト
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="/" class="btn btn-secondary">
+                ← メインページに戻る
+            </a>
+        </div>
+    </div>
+
+    <!-- 通知 -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        let currentSettings = {};
+
+        // ページ読み込み時に現在の設定を取得
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadSettings();
+        });
+
+        async function loadSettings() {
+            try {
+                const response = await fetch('/api/settings');
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentSettings = data.settings;
+                    updateUI();
+                }
+            } catch (error) {
+                console.error('設定読み込みエラー:', error);
+                showNotification('設定の読み込みに失敗しました', 'error');
+            }
+        }
+
+        function updateUI() {
+            const apiSettings = currentSettings.api_settings || {};
+            const providerStatus = currentSettings.provider_status || {};
+
+            // 各プロバイダーの設定を UI に反映
+            updateProviderUI('replicate', apiSettings.replicate, providerStatus.replicate);
+            updateProviderUI('huggingface', apiSettings.huggingface, providerStatus.huggingface);
+            updateProviderUI('local', apiSettings.local, providerStatus.local);
+        }
+
+        function updateProviderUI(provider, settings, status) {
+            const statusElement = document.getElementById(`${provider}-status`);
+            
+            if (status && status.configured) {
+                statusElement.textContent = '設定済み';
+                statusElement.className = 'status-indicator status-configured';
+            } else {
+                statusElement.textContent = '未設定';
+                statusElement.className = 'status-indicator status-not-configured';
+            }
+
+            // フィールドに現在の値を設定（パスワードフィールドは除く）
+            if (settings) {
+                if (provider === 'replicate') {
+                    document.getElementById('replicate-model').value = settings.model || '';
+                } else if (provider === 'huggingface') {
+                    document.getElementById('huggingface-model').value = settings.model || '';
+                } else if (provider === 'local') {
+                    document.getElementById('local-url').value = settings.server_url || '';
+                    document.getElementById('local-model').value = settings.model_path || '';
+                }
+            }
+        }
+
+        async function saveSettings(provider) {
+            const settings = getProviderSettings(provider);
+            
+            try {
+                const response = await fetch('/api/settings/stable-diffusion', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        provider: provider,
+                        settings: settings
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(`${provider} の設定を保存しました`, 'success');
+                    await loadSettings(); // 設定を再読み込み
+                } else {
+                    const errors = data.errors || [data.error || '設定の保存に失敗しました'];
+                    showNotification(`エラー: ${errors.join(', ')}`, 'error');
+                }
+            } catch (error) {
+                console.error('設定保存エラー:', error);
+                showNotification('設定の保存に失敗しました', 'error');
+            }
+        }
+
+        async function testConnection(provider) {
+            try {
+                const response = await fetch('/api/settings/test-connection', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        provider: provider
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification(`${provider} 接続成功！`, 'success');
+                } else {
+                    showNotification(`接続エラー: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                console.error('接続テストエラー:', error);
+                showNotification('接続テストに失敗しました', 'error');
+            }
+        }
+
+        function getProviderSettings(provider) {
+            if (provider === 'replicate') {
+                return {
+                    api_token: document.getElementById('replicate-token').value,
+                    model: document.getElementById('replicate-model').value
+                };
+            } else if (provider === 'huggingface') {
+                return {
+                    api_token: document.getElementById('huggingface-token').value,
+                    model: document.getElementById('huggingface-model').value
+                };
+            } else if (provider === 'local') {
+                return {
+                    server_url: document.getElementById('local-url').value,
+                    model_path: document.getElementById('local-model').value
+                };
+            }
+            return {};
+        }
+
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>

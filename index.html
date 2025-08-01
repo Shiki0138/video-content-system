@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoAI Studio - 動画から全コンテンツを自動生成</title>
+    <meta name="description" content="動画ファイル1つでブログ記事、SNS投稿、画像プロンプトを自動生成。AIを活用した革新的なコンテンツ制作自動化システム">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎬</text></svg>">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        /* ヒーローセクション */
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .hero-content {
+            text-align: center;
+            padding: 2rem;
+            max-width: 1200px;
+            z-index: 2;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .hero-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+        
+        .hero-description {
+            font-size: 1.1rem;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 3rem;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            animation: fadeInUp 1s ease-out 0.6s both;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        /* 特徴セクション */
+        .features {
+            padding: 5rem 2rem;
+            background: #f8f9fa;
+        }
+        
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #333;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #667eea;
+        }
+        
+        /* ワークフローセクション */
+        .workflow {
+            padding: 5rem 2rem;
+            background: white;
+        }
+        
+        .workflow-steps {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+        
+        .workflow-step {
+            text-align: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            position: relative;
+        }
+        
+        .workflow-step::after {
+            content: '→';
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.5rem;
+            color: #667eea;
+        }
+        
+        .workflow-step:last-child::after {
+            display: none;
+        }
+        
+        .step-number {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            line-height: 40px;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* デモセクション */
+        .demo {
+            padding: 5rem 2rem;
+            background: #f8f9fa;
+        }
+        
+        .demo-content {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .demo-image {
+            width: 100%;
+            max-width: 600px;
+            margin: 2rem auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* フッター */
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+        
+        .start-system-button {
+            display: inline-block;
+            padding: 1.5rem 4rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            margin-top: 2rem;
+        }
+        
+        .start-system-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.6);
+        }
+        
+        /* アニメーション */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* レスポンシブ */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.2rem;
+            }
+            
+            .workflow-step::after {
+                display: none;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 背景パーティクル */
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0) translateX(0);
+            }
+            25% {
+                transform: translateY(-200px) translateX(100px);
+            }
+            50% {
+                transform: translateY(-100px) translateX(-100px);
+            }
+            75% {
+                transform: translateY(-300px) translateX(50px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ヒーローセクション -->
+    <section class="hero">
+        <div class="particles" id="particles"></div>
+        <div class="hero-content">
+            <h1>VideoAI Studio</h1>
+            <p class="hero-subtitle">動画から全コンテンツを自動生成</p>
+            <p class="hero-description">
+                動画ファイル1つアップロードするだけで、ブログ記事、SNS投稿文、画像生成プロンプトまで
+                AIが自動的に作成。コンテンツ制作の時間を劇的に短縮します。
+            </p>
+            <a href="#demo" class="cta-button">デモを見る</a>
+        </div>
+    </section>
+
+    <!-- 特徴セクション -->
+    <section class="features">
+        <div class="features-container">
+            <h2 class="section-title">システムの特徴</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🎥</div>
+                    <h3 class="feature-title">動画から自動文字起こし</h3>
+                    <p>OpenAI Whisperを使用した高精度な音声認識で、動画の内容を正確にテキスト化</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📝</div>
+                    <h3 class="feature-title">プロ品質のブログ記事</h3>
+                    <p>話し言葉を読みやすい文章に自動変換。SEO最適化済みのHTML形式で出力</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎨</div>
+                    <h3 class="feature-title">画像プロンプト自動生成</h3>
+                    <p>サムネイルやブログ画像用の詳細なDALL-E 3プロンプトを自動作成</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">SNS投稿文も同時生成</h3>
+                    <p>X (Twitter)用の要約文とハッシュタグを自動生成。文字数制限も考慮</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">作業時間を95%削減</h3>
+                    <p>従来3-5時間かかっていた作業が、わずか5分で完了</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔧</div>
+                    <h3 class="feature-title">カスタマイズ可能</h3>
+                    <p>生成されたコンテンツは全て編集可能。必要に応じて微調整できます</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ワークフローセクション -->
+    <section class="workflow">
+        <div class="features-container">
+            <h2 class="section-title">シンプルなワークフロー</h2>
+            <div class="workflow-steps">
+                <div class="workflow-step">
+                    <div class="step-number">1</div>
+                    <h4>動画アップロード</h4>
+                    <p>MP4, MOV等対応</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">2</div>
+                    <h4>キャプション作成</h4>
+                    <p>自動文字起こし</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">3</div>
+                    <h4>ブログ生成</h4>
+                    <p>SEO最適化済み</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">4</div>
+                    <h4>画像プロンプト</h4>
+                    <p>DALL-E 3用</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">5</div>
+                    <h4>画像アップロード</h4>
+                    <p>手動で追加</p>
+                </div>
+                <div class="workflow-step">
+                    <div class="step-number">6</div>
+                    <h4>SNS投稿文</h4>
+                    <p>X用に最適化</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- デモセクション -->
+    <section class="demo" id="demo">
+        <div class="demo-content">
+            <h2 class="section-title">実際の生成例</h2>
+            <p>10分の動画から、以下のコンテンツが自動生成されます：</p>
+            
+            <div style="text-align: left; max-width: 600px; margin: 2rem auto;">
+                <h3 style="color: #667eea; margin-bottom: 1rem;">📝 ブログ記事</h3>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li>✅ 2000文字以上の充実した記事</li>
+                    <li>✅ 見出し・段落の自動構成</li>
+                    <li>✅ SEOメタデータ完備</li>
+                </ul>
+                
+                <h3 style="color: #667eea; margin: 2rem 0 1rem;">🎨 画像プロンプト</h3>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li>✅ YouTubeサムネイル用プロンプト</li>
+                    <li>✅ ブログアイキャッチ用プロンプト</li>
+                    <li>✅ セクション画像用プロンプト</li>
+                </ul>
+                
+                <h3 style="color: #667eea; margin: 2rem 0 1rem;">📱 SNS投稿</h3>
+                <ul style="list-style: none; padding-left: 0;">
+                    <li>✅ X (Twitter)用140文字投稿</li>
+                    <li>✅ 適切なハッシュタグ</li>
+                    <li>✅ エンゲージメント最適化</li>
+                </ul>
+            </div>
+            
+            <a href="/web_app.html" class="start-system-button">システムを開始する</a>
+        </div>
+    </section>
+
+    <!-- フッター -->
+    <footer class="footer">
+        <p>&copy; 2025 VideoAI Studio. Built with AI for Content Creators.</p>
+        <p style="margin-top: 1rem; opacity: 0.8;">
+            Powered by OpenAI Whisper & DALL-E 3
+        </p>
+    </footer>
+
+    <script>
+        // パーティクル生成
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 50; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (20 + Math.random() * 10) + 's';
+            particlesContainer.appendChild(particle);
+        }
+        
+        // スムーズスクロール
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>

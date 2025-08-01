@@ -20,6 +20,7 @@ import uvicorn
 # ローカルモジュール
 from main import VideoContentProcessor
 from modules.utils import setup_logging
+from modules.config_manager import ConfigManager
 import yaml
 
 # 設定読み込み
@@ -43,6 +44,7 @@ logger = setup_logging()
 # グローバル変数
 processor = None
 current_session = {}
+config_manager = ConfigManager()
 
 class SessionManager:
     """セッション管理クラス"""
@@ -308,9 +310,9 @@ async def process_content(request: Request):
         logger.error(f"コンテンツ生成エラー: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.post("/api/process/thumbnail")
-async def process_thumbnail(request: Request):
-    """バイラルサムネイル生成処理"""
+@app.post("/api/process/image-prompts")
+async def process_image_prompts(request: Request):
+    """画像生成プロンプト作成処理"""
     
     try:
         data = await request.json()
@@ -322,82 +324,90 @@ async def process_thumbnail(request: Request):
         
         title = session['data'].get('title', '動画タイトル')
         transcript_data = session['data']['transcript']
+        blog_content = session['data'].get('content', {}).get('blog', {})
         
-        # バイラルサムネイル生成
-        logger.info(f"🎨 バイラルサムネイル生成開始: {title}")
+        # 画像プロンプト生成
+        logger.info(f"🎨 画像プロンプト生成開始: {title}")
         
-        # 出力ディレクトリ
-        output_dir = Path("temp_sessions") / session_id
-        output_dir.mkdir(parents=True, exist_ok=True)
+        from modules.image_prompt_generator import ImagePromptGenerator
+        prompt_generator = ImagePromptGenerator(CONFIG)
         
-        # Stable Diffusion対応チェック
-        use_stable_diffusion = CONFIG.get('thumbnail', {}).get('use_stable_diffusion', True)
-        
-        if use_stable_diffusion:
-            try:
-                # Stable Diffusionサムネイル生成を試みる
-                from modules.stable_diffusion_thumbnail import StableDiffusionThumbnailCreator, StableDiffusionSetup
-                
-                # 環境チェック
-                env_check = StableDiffusionSetup.check_environment()
-                logger.info(f"SD環境チェック: {env_check}")
-                
-                if any(env_check.values()):
-                    sd_creator = StableDiffusionThumbnailCreator(CONFIG.get('thumbnail', {}))
-                    thumbnail_variants = sd_creator.create_viral_thumbnails(
-                        title=title,
-                        transcript_data=transcript_data,
-                        output_dir=output_dir
-                    )
-                    logger.info("✓ Stable Diffusionでサムネイル生成完了")
-                else:
-                    raise Exception("Stable Diffusion環境が利用できません")
-                    
-            except Exception as e:
-                logger.warning(f"Stable Diffusion使用不可: {e}")
-                logger.info("フォールバック: 従来のサムネイル生成を使用")
-                # フォールバック：従来のバイラルサムネイル作成器を使用
-                from modules.viral_thumbnail_creator import ViralThumbnailCreator
-                viral_creator = ViralThumbnailCreator(CONFIG.get('thumbnail', {}))
-                thumbnail_variants = viral_creator.create_viral_options(
-                    title=title,
-                    transcript_data=transcript_data,
-                    output_dir=output_dir
-                )
-        else:
-            # 従来のバイラルサムネイル作成器を使用
-            from modules.viral_thumbnail_creator import ViralThumbnailCreator
-            viral_creator = ViralThumbnailCreator(CONFIG.get('thumbnail', {}))
-            thumbnail_variants = viral_creator.create_viral_options(
-                title=title,
-                transcript_data=transcript_data,
-                output_dir=output_dir
-            )
+        # 全プロンプト生成
+        prompts = prompt_generator.generate_all_prompts(
+            title=title,
+            transcript_data=transcript_data,
+            blog_content=blog_content
+        )
         
         # セッション更新
         session_manager.update_session(session_id, {
-            'status': 'thumbnail_created',
-            'steps_completed': session['steps_completed'] + ['thumbnail'],
-            'files': {
-                **session['files'],
-                'thumbnails': [variant['path'] for variant in thumbnail_variants]
-            },
+            'status': 'prompts_generated',
+            'steps_completed': session['steps_completed'] + ['image_prompts'],
             'data': {
                 **session['data'],
-                'thumbnail_variants': thumbnail_variants,
-                'thumbnail_time': datetime.now().isoformat()
+                'image_prompts': prompts,
+                'prompts_time': datetime.now().isoformat()
             }
         })
         
         return JSONResponse({
             "success": True,
-            "message": "バイラルサムネイル生成完了",
-            "thumbnail_variants": thumbnail_variants,
-            "total_variants": len(thumbnail_variants)
+            "message": "画像プロンプト生成完了",
+            "prompts": prompts
         })
         
     except Exception as e:
-        logger.error(f"バイラルサムネイル生成エラー: {e}")
+        logger.error(f"画像プロンプト生成エラー: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/process/upload-images")
+async def process_upload_images(request: Request):
+    """画像手動アップロード処理"""
+    
+    try:
+        data = await request.json()
+        session_id = data.get('session_id')
+        image_type = data.get('image_type')  # thumbnail, featured, section_1, etc.
+        image_data = data.get('image_data')  # Base64エンコードされた画像
+        
+        session = session_manager.get_session(session_id)
+        if not session:
+            raise HTTPException(status_code=404, detail="セッションが見つかりません")
+        
+        # 画像保存
+        output_dir = Path("temp_sessions") / session_id / "images"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        
+        # Base64デコード
+        import base64
+        image_bytes = base64.b64decode(image_data.split(',')[1] if ',' in image_data else image_data)
+        
+        # ファイル名決定
+        file_name = f"{image_type}.png"
+        file_path = output_dir / file_name
+        
+        # 画像保存
+        with open(file_path, 'wb') as f:
+            f.write(image_bytes)
+        
+        # セッション更新
+        if 'uploaded_images' not in session['data']:
+            session['data']['uploaded_images'] = {}
+        
+        session['data']['uploaded_images'][image_type] = str(file_path)
+        
+        session_manager.update_session(session_id, {
+            'data': session['data']
+        })
+        
+        return JSONResponse({
+            "success": True,
+            "message": f"{image_type}画像アップロード完了",
+            "file_path": str(file_path)
+        })
+        
+    except Exception as e:
+        logger.error(f"画像アップロードエラー: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/api/session/{session_id}")
@@ -489,6 +499,234 @@ async def export_content(request: Request):
         
     except Exception as e:
         logger.error(f"エクスポートエラー: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/api/settings")
+async def get_settings():
+    """現在の設定を取得"""
+    
+    try:
+        settings = {
+            'api_settings': config_manager.get_api_settings(),
+            'provider_status': config_manager.get_provider_status(),
+            'thumbnail_config': config_manager.get_thumbnail_config()
+        }
+        
+        return JSONResponse({
+            "success": True,
+            "settings": settings
+        })
+        
+    except Exception as e:
+        logger.error(f"設定取得エラー: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/settings/stable-diffusion")
+async def update_stable_diffusion_settings(request: Request):
+    """Stable Diffusion API設定を更新"""
+    
+    try:
+        data = await request.json()
+        provider = data.get('provider')
+        settings = data.get('settings', {})
+        
+        if not provider:
+            raise HTTPException(status_code=400, detail="プロバイダーが指定されていません")
+        
+        # 設定の検証
+        validation = config_manager.validate_api_settings(provider, settings)
+        if not validation['valid']:
+            return JSONResponse({
+                "success": False,
+                "errors": validation['errors']
+            })
+        
+        # 設定を更新
+        success = config_manager.update_stable_diffusion_settings(provider, settings)
+        
+        if success:
+            # 設定を再読み込み
+            global CONFIG
+            CONFIG = config_manager.config
+            
+            return JSONResponse({
+                "success": True,
+                "message": f"{provider} API設定を更新しました"
+            })
+        else:
+            return JSONResponse({
+                "success": False,
+                "error": "設定の保存に失敗しました"
+            })
+        
+    except Exception as e:
+        logger.error(f"API設定更新エラー: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/settings/test-connection")
+async def test_api_connection(request: Request):
+    """API接続テスト"""
+    
+    try:
+        data = await request.json()
+        provider = data.get('provider')
+        
+        if not provider:
+            raise HTTPException(status_code=400, detail="プロバイダーが指定されていません")
+        
+        # 接続テスト
+        result = config_manager.test_api_connection(provider)
+        
+        return JSONResponse({
+            "success": result['success'],
+            "message": result.get('message', ''),
+            "error": result.get('error', '')
+        })
+        
+    except Exception as e:
+        logger.error(f"接続テストエラー: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.get("/settings", response_class=HTMLResponse)
+async def settings_page(request: Request):
+    """設定ページ（Runware優先）"""
+    
+    return templates.TemplateResponse("settings_runware.html", {
+        "request": request,
+        "config": CONFIG
+    })
+
+@app.post("/api/settings/dalle3")
+async def update_dalle3_settings(request: Request):
+    """DALL-E 3 API設定を更新"""
+    
+    try:
+        data = await request.json()
+        settings = data.get('settings', {})
+        
+        # 設定の検証
+        if not settings.get('api_key'):
+            return JSONResponse({
+                "success": False,
+                "error": "OpenAI APIキーが必要です"
+            })
+        
+        # DALL-E 3設定を更新
+        success = config_manager.update_dalle3_settings(settings)
+        
+        if success:
+            # 設定を再読み込み
+            global CONFIG
+            CONFIG = config_manager.config
+            
+            return JSONResponse({
+                "success": True,
+                "message": "DALL-E 3 API設定を更新しました"
+            })
+        else:
+            return JSONResponse({
+                "success": False,
+                "error": "設定の保存に失敗しました"
+            })
+        
+    except Exception as e:
+        logger.error(f"DALL-E 3 API設定更新エラー: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/settings/runware")
+async def update_runware_settings(request: Request):
+    """Runware API設定を更新"""
+    
+    try:
+        data = await request.json()
+        settings = data.get('settings', {})
+        
+        # 設定の検証
+        if not settings.get('api_key'):
+            return JSONResponse({
+                "success": False,
+                "error": "APIキーが必要です"
+            })
+        
+        # Runware設定を更新
+        success = config_manager.update_runware_settings(settings)
+        
+        if success:
+            # 設定を再読み込み
+            global CONFIG
+            CONFIG = config_manager.config
+            
+            return JSONResponse({
+                "success": True,
+                "message": "Runware API設定を更新しました"
+            })
+        else:
+            return JSONResponse({
+                "success": False,
+                "error": "設定の保存に失敗しました"
+            })
+        
+    except Exception as e:
+        logger.error(f"Runware API設定更新エラー: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/settings/test-connection")
+async def test_runware_connection(request: Request):
+    """Runware API接続テスト"""
+    
+    try:
+        data = await request.json()
+        provider = data.get('provider', 'runware')
+        
+        if provider == 'dalle3':
+            # DALL-E 3接続テスト
+            from modules.dalle3_image_generator import DALLE3ImageGenerator
+            
+            dalle3_config = CONFIG.get('thumbnail', {}).get('dalle3', {})
+            if not dalle3_config.get('api_key'):
+                return JSONResponse({
+                    "success": False,
+                    "error": "OpenAI APIキーが設定されていません"
+                })
+            
+            generator = DALLE3ImageGenerator(dalle3_config)
+            result = generator.test_connection()
+            
+            return JSONResponse({
+                "success": result['success'],
+                "message": result.get('message', ''),
+                "error": result.get('error', '')
+            })
+        elif provider == 'runware':
+            # Runware接続テスト
+            from modules.runware_image_generator import RunwareImageGenerator
+            
+            runware_config = CONFIG.get('thumbnail', {}).get('runware', {})
+            if not runware_config.get('api_key'):
+                return JSONResponse({
+                    "success": False,
+                    "error": "APIキーが設定されていません"
+                })
+            
+            generator = RunwareImageGenerator({'runware': runware_config})
+            result = generator.test_connection()
+            
+            return JSONResponse({
+                "success": result['success'],
+                "message": result.get('message', ''),
+                "error": result.get('error', '')
+            })
+        else:
+            # 後方互換性のため他プロバイダーも維持
+            result = config_manager.test_api_connection(provider)
+            return JSONResponse({
+                "success": result['success'],
+                "message": result.get('message', ''),
+                "error": result.get('error', '')
+            })
+        
+    except Exception as e:
+        logger.error(f"接続テストエラー: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 def generate_captions(transcript_data: Dict, style: str) -> List[Dict]:

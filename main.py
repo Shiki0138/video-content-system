@@ -80,12 +80,30 @@ class VideoContentProcessor:
                 video_info=self._get_video_info(video_path)
             )
             
-            # Step 3: Jekyllブログ記事作成
+            # Step 3: サムネイル生成（ブログで再利用する可能性があるため先に生成）
+            logger.info("🎨 サムネイル生成中...")
+            thumbnail_path = None
+            if self.config.get('thumbnail', {}).get('image_provider') == 'runware':
+                # Runware APIでのサムネイル生成は後で行う
+                logger.info("Runwareサムネイル生成は後で実行")
+            else:
+                thumbnail_path = self.thumbnail_creator.create(
+                    title=content['thumbnail']['title'],
+                    subtitle=content['thumbnail']['subtitle'],
+                    output_path=output_dir / "thumbnail.png"
+                )
+            
+            # Step 4: Jekyllブログ記事作成
             logger.info("📄 Jekyll記事作成中...")
             
             # 画像パスを取得
             featured_image = content['blog'].get('featured_image')
             section_images = content['blog'].get('section_images')
+            
+            # YouTubeサムネイルをブログで再利用する設定をチェック
+            youtube_thumbnail = None
+            if thumbnail_path and self.config.get('image_optimization', {}).get('reuse_youtube_for_blog', True):
+                youtube_thumbnail = thumbnail_path
             
             jekyll_path = self.jekyll_writer.create_post(
                 title=title,
@@ -93,7 +111,9 @@ class VideoContentProcessor:
                 transcript=transcript_data,
                 output_dir=Path(self.config['output']['jekyll_posts_dir']),
                 featured_image=featured_image,
-                section_images=section_images
+                section_images=section_images,
+                generate_images=True,
+                youtube_thumbnail=youtube_thumbnail
             )
             
             # Step 4: YouTube説明文保存
@@ -123,13 +143,16 @@ class VideoContentProcessor:
             logger.info(f"🐦 X投稿バリエーション: {twitter_path}")
             logger.info(f"🐦 従来形式X投稿: {legacy_twitter_path}")
             
-            # Step 6: サムネイル生成
-            logger.info("🎨 サムネイル生成中...")
-            thumbnail_path = self.thumbnail_creator.create(
-                title=content['thumbnail']['title'],
-                subtitle=content['thumbnail']['subtitle'],
-                output_path=output_dir / "thumbnail.png"
-            )
+            # Step 6: Runwareサムネイル生成（まだ生成していない場合）
+            if self.config.get('thumbnail', {}).get('image_provider') == 'runware' and not thumbnail_path:
+                logger.info("🎨 Runwareでサムネイル生成中...")
+                # TODO: ここでRunware APIを使用したサムネイル生成を実装
+                # 現時点では従来のサムネイル生成を使用
+                thumbnail_path = self.thumbnail_creator.create(
+                    title=content['thumbnail']['title'],
+                    subtitle=content['thumbnail']['subtitle'],
+                    output_path=output_dir / "thumbnail.png"
+                )
             
             # Step 7: 内部リンク処理
             logger.info("🔗 内部リンク処理中...")

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VideoAI Studio - Runware API設定</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
+        
+        :root {
+            --quantum-primary: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #f5576c 75%, #4facfe 100%);
+            --neural-secondary: linear-gradient(45deg, #00f5ff, #ff00f5, #f5ff00, #00ff5f);
+            --quantum-bg: radial-gradient(ellipse at center, #0a0a23 0%, #000000 70%);
+            --neural-text: #e8f4fd;
+            --success-quantum: #06ffa5;
+            --warning-neural: #ffbe0b;
+            --error-holographic: #ff006e;
+            --card-bg: rgba(255, 255, 255, 0.05);
+            --border-color: rgba(102, 126, 234, 0.3);
+            --runware-accent: #7C3AED;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--quantum-bg);
+            color: var(--neural-text);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            background: var(--quantum-primary);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: quantum-flow 3s ease-in-out infinite alternate;
+            margin-bottom: 20px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: rgba(232, 244, 253, 0.8);
+        }
+
+        .highlight-banner {
+            background: linear-gradient(135deg, var(--runware-accent), #9333EA);
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 40px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.3);
+        }
+
+        .highlight-banner h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        .stats-row {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--success-quantum);
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .settings-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 40px;
+            margin-bottom: 30px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .settings-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(124, 58, 237, 0.6);
+            box-shadow: 0 15px 30px rgba(124, 58, 237, 0.2);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--neural-text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-title .icon {
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--neural-text);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(102, 126, 234, 0.3);
+            border-radius: 10px;
+            color: var(--neural-text);
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--runware-accent);
+            box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: rgba(232, 244, 253, 0.5);
+        }
+
+        .help-text {
+            font-size: 0.85rem;
+            color: rgba(232, 244, 253, 0.6);
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--runware-accent), #9333EA);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.3);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--neural-text);
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(124, 58, 237, 0.5);
+        }
+
+        .btn-test {
+            background: rgba(6, 255, 165, 0.2);
+            color: var(--success-quantum);
+            border: 1px solid var(--success-quantum);
+        }
+
+        .btn-test:hover {
+            background: rgba(6, 255, 165, 0.3);
+        }
+
+        .quick-setup {
+            background: rgba(6, 255, 165, 0.1);
+            border: 1px solid var(--success-quantum);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .quick-setup h3 {
+            color: var(--success-quantum);
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .quick-setup ol {
+            margin-left: 20px;
+            line-height: 1.6;
+        }
+
+        .quick-setup a {
+            color: var(--success-quantum);
+            text-decoration: none;
+        }
+
+        .quick-setup a:hover {
+            text-decoration: underline;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: 600;
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.success {
+            background: var(--success-quantum);
+            color: #000;
+        }
+
+        .notification.error {
+            background: var(--error-holographic);
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .feature-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 15px;
+            border: 1px solid rgba(102, 126, 234, 0.2);
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .feature-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--neural-text);
+        }
+
+        .feature-desc {
+            font-size: 0.85rem;
+            color: rgba(232, 244, 253, 0.7);
+        }
+
+        @keyframes quantum-flow {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px 15px;
+            }
+            
+            .settings-card {
+                padding: 25px 20px;
+            }
+            
+            .stats-row {
+                gap: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚀 Runware API設定</h1>
+            <p>超高速・低コストでYouTubeサムネイルとブログ画像を自動生成</p>
+        </div>
+
+        <!-- Runwareの優位性を強調 -->
+        <div class="highlight-banner">
+            <h2>なぜRunware？</h2>
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="stat-number">$0.0006</span>
+                    <span class="stat-label">1枚あたり</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">0.3秒</span>
+                    <span class="stat-label">生成速度</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">300,000+</span>
+                    <span class="stat-label">利用可能モデル</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">無料</span>
+                    <span class="stat-label">1,000枚まで</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- クイックセットアップガイド -->
+        <div class="quick-setup">
+            <h3>🔥 5分でできるクイックセットアップ</h3>
+            <ol>
+                <li><strong>アカウント作成</strong> → <a href="https://runware.ai" target="_blank">runware.ai</a> で「Get Started Free」</li>
+                <li><strong>APIキー取得</strong> → ダッシュボードで「Create New API Key」</li>
+                <li><strong>下記に貼り付け</strong> → 保存して接続テスト</li>
+                <li><strong>完了！</strong> → 超高速画像生成がスタート</li>
+            </ol>
+        </div>
+
+        <!-- Runware API設定 -->
+        <div class="settings-card">
+            <div class="card-title">
+                <span class="icon">⚡</span>
+                Runware API設定
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="runware-api-key">API Key</label>
+                <input type="password" id="runware-api-key" class="form-input" 
+                       placeholder="your-runware-api-key-here">
+                <div class="help-text">
+                    Runwareダッシュボードから取得したAPIキー
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">接続方式</label>
+                <select id="runware-connection" class="form-input">
+                    <option value="websocket" selected>WebSocket（推奨 - 最速）</option>
+                    <option value="rest">REST API（安定重視）</option>
+                </select>
+                <div class="help-text">
+                    WebSocketは最速、REST APIは企業ネットワークでも確実に接続
+                </div>
+            </div>
+            
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="saveRunwareSettings()">
+                    💾 保存
+                </button>
+                <button class="btn btn-test" onclick="testRunwareConnection()">
+                    🔍 接続テスト
+                </button>
+            </div>
+        </div>
+
+        <!-- 生成される画像の説明 -->
+        <div class="settings-card">
+            <div class="card-title">
+                <span class="icon">🎨</span>
+                自動生成される画像
+            </div>
+            
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <span class="feature-icon">🎬</span>
+                    <div class="feature-title">YouTubeサムネイル</div>
+                    <div class="feature-desc">3つの心理戦略で自動生成<br>（インパクト・好奇心・権威）</div>
+                </div>
+                
+                <div class="feature-item">
+                    <span class="feature-icon">📝</span>
+                    <div class="feature-title">ブログアイキャッチ</div>
+                    <div class="feature-desc">YouTubeサムネイルを自動最適化<br>またはオリジナル生成</div>
+                </div>
+                
+                <div class="feature-item">
+                    <span class="feature-icon">📄</span>
+                    <div class="feature-title">セクション画像</div>
+                    <div class="feature-desc">記事内に最大2枚<br>H2タグ直後に自動配置</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- コスト計算 -->
+        <div class="settings-card">
+            <div class="card-title">
+                <span class="icon">💰</span>
+                月間コスト見積もり
+            </div>
+            
+            <p style="margin-bottom: 20px;">あなたの使用量に基づく予想コスト：</p>
+            
+            <div style="background: rgba(255, 255, 255, 0.05); padding: 20px; border-radius: 10px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>動画10本/月の場合：</span>
+                    <span style="color: var(--success-quantum); font-weight: 600;">$0.30（約45円）</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span>動画30本/月の場合：</span>
+                    <span style="color: var(--success-quantum); font-weight: 600;">$0.90（約135円）</span>
+                </div>
+                <div style="display: flex; justify-content: space-between;">
+                    <span>動画100本/月の場合：</span>
+                    <span style="color: var(--success-quantum); font-weight: 600;">$3.00（約450円）</span>
+                </div>
+            </div>
+            
+            <p style="margin-top: 15px; font-size: 0.9rem; color: rgba(232, 244, 253, 0.7);">
+                ※1動画あたり：サムネイル3枚 + ブログ画像3枚 = 計6枚生成として計算
+            </p>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px;">
+            <a href="/" class="btn btn-secondary">
+                ← メインページに戻る
+            </a>
+            <a href="https://github.com/Shiki0138/video-content-system/blob/main/RUNWARE_API_SETUP.md" 
+               target="_blank" class="btn btn-secondary" style="margin-left: 10px;">
+                📚 詳細ガイドを見る
+            </a>
+        </div>
+    </div>
+
+    <!-- 通知 -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        let currentSettings = {};
+
+        // ページ読み込み時に現在の設定を取得
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadSettings();
+        });
+
+        async function loadSettings() {
+            try {
+                const response = await fetch('/api/settings');
+                const data = await response.json();
+                
+                if (data.success) {
+                    currentSettings = data.settings;
+                    
+                    // Runware設定をUIに反映
+                    const runwareSettings = currentSettings.thumbnail_config?.runware || {};
+                    
+                    // APIキーは表示しない（セキュリティ）
+                    if (runwareSettings.api_key) {
+                        document.getElementById('runware-api-key').placeholder = '設定済み（変更する場合は新しいキーを入力）';
+                    }
+                    
+                    // 接続方式
+                    if (runwareSettings.use_websocket !== undefined) {
+                        document.getElementById('runware-connection').value = 
+                            runwareSettings.use_websocket ? 'websocket' : 'rest';
+                    }
+                }
+            } catch (error) {
+                console.error('設定読み込みエラー:', error);
+            }
+        }
+
+        async function saveRunwareSettings() {
+            const apiKey = document.getElementById('runware-api-key').value;
+            const useWebsocket = document.getElementById('runware-connection').value === 'websocket';
+            
+            // APIキーが入力されていない場合
+            if (!apiKey && !currentSettings.thumbnail_config?.runware?.api_key) {
+                showNotification('APIキーを入力してください', 'error');
+                return;
+            }
+            
+            const settings = {
+                api_key: apiKey || currentSettings.thumbnail_config?.runware?.api_key,
+                use_websocket: useWebsocket
+            };
+            
+            try {
+                const response = await fetch('/api/settings/runware', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        settings: settings
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('Runware API設定を保存しました', 'success');
+                    await loadSettings(); // 設定を再読み込み
+                    
+                    // APIキーフィールドをクリア（セキュリティ）
+                    if (apiKey) {
+                        document.getElementById('runware-api-key').value = '';
+                        document.getElementById('runware-api-key').placeholder = '設定済み（変更する場合は新しいキーを入力）';
+                    }
+                } else {
+                    showNotification(`エラー: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                console.error('設定保存エラー:', error);
+                showNotification('設定の保存に失敗しました', 'error');
+            }
+        }
+
+        async function testRunwareConnection() {
+            try {
+                // まず設定を保存
+                await saveRunwareSettings();
+                
+                const response = await fetch('/api/settings/test-connection', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        provider: 'runware'
+                    })
+                });
+
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('✅ Runware API接続成功！画像生成の準備ができました', 'success');
+                } else {
+                    showNotification(`接続エラー: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                console.error('接続テストエラー:', error);
+                showNotification('接続テストに失敗しました', 'error');
+            }
+        }
+
+        function showNotification(message, type) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>

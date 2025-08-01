@@ -292,6 +292,66 @@ class JekyllWriter:
         text = re.sub(r'([\u2600-\u27BF\U0001F300-\U0001F9FF])([^\s])', r'\1 \2', text)
         return text
     
+    def _generate_blog_images(self, title: str, content: Dict, transcript: Dict, 
+                            output_dir: Path, youtube_thumbnail: Optional[Path] = None) -> tuple:
+        """Runware APIを使用してブログ画像を生成"""
+        
+        featured_image = None
+        section_images = {}
+        
+        try:
+            # Runware設定チェック
+            runware_config = self.config.get('thumbnail', {}).get('runware', {})
+            if not runware_config.get('api_key'):
+                logger.warning("Runware APIキーが設定されていません。画像生成をスキップします。")
+                return featured_image, section_images
+            
+            # 画像最適化設定
+            image_optimization = self.config.get('image_optimization', {})
+            reuse_youtube = image_optimization.get('reuse_youtube_for_blog', True)
+            
+            # YouTubeサムネイルの再利用チェック
+            if reuse_youtube and youtube_thumbnail and youtube_thumbnail.exists():
+                logger.info(f"YouTubeサムネイルをブログアイキャッチに再利用: {youtube_thumbnail}")
+                featured_image = youtube_thumbnail
+            else:
+                # Runware Image Generatorを使用
+                from modules.runware_image_generator import RunwareImageGenerator
+                
+                generator = RunwareImageGenerator({'runware': runware_config})
+                
+                # ブログ画像生成（非同期実行）
+                blog_images = asyncio.run(
+                    generator.generate_blog_images(
+                        title=title,
+                        content=content,
+                        output_dir=output_dir
+                    )
+                )
+                
+                if blog_images:
+                    # アイキャッチ画像
+                    if blog_images.get('featured'):
+                        featured_image = Path(blog_images['featured'])
+                    
+                    # セクション画像
+                    for key, path in blog_images.items():
+                        if key.startswith('section_'):
+                            # セクションタイトルを抽出
+                            sections = content.get('sections', [])
+                            if len(sections) > 0 and 'section_1' in key:
+                                section_images[sections[0]['title']] = Path(path)
+                            elif len(sections) > 1 and 'section_2' in key:
+                                section_images[sections[1]['title']] = Path(path)
+            
+            logger.info(f"✓ ブログ画像生成完了: アイキャッチ={featured_image}, セクション画像={len(section_images)}枚")
+            
+        except Exception as e:
+            logger.error(f"ブログ画像生成エラー: {e}")
+            logger.info("画像なしで記事を生成します")
+        
+        return featured_image, section_images
+    
     def _clean_point_text(self, text: str) -> str:
         """ポイントテキストをクリーンアップ"""
         # 不自然な文末や繰り返しを削除

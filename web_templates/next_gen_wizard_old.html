@@ -51,24 +51,24 @@
                     <div class="step-label">動画アップロード</div>
                 </div>
                 <div class="step" data-step="2">
-                    <div class="step-icon">✨</div>
-                    <div class="step-label">キャプション作成</div>
+                    <div class="step-icon">🧠</div>
+                    <div class="step-label">AI音声解析</div>
                 </div>
                 <div class="step" data-step="3">
-                    <div class="step-icon">📝</div>
-                    <div class="step-label">ブログ作成</div>
+                    <div class="step-icon">✨</div>
+                    <div class="step-label">キャプション生成</div>
                 </div>
                 <div class="step" data-step="4">
                     <div class="step-icon">🎨</div>
-                    <div class="step-label">画像プロンプト生成</div>
+                    <div class="step-label">サムネイル生成</div>
                 </div>
                 <div class="step" data-step="5">
-                    <div class="step-icon">🖼️</div>
-                    <div class="step-label">画像アップロード</div>
+                    <div class="step-icon">🎯</div>
+                    <div class="step-label">ブログ生成</div>
                 </div>
                 <div class="step" data-step="6">
-                    <div class="step-icon">📱</div>
-                    <div class="step-label">ツイート文作成</div>
+                    <div class="step-icon">🔮</div>
+                    <div class="step-label">X投稿生成</div>
                 </div>
                 <div class="step" data-step="7">
                     <div class="step-icon">💫</div>
@@ -184,62 +184,11 @@
                 </div>
             </div>
 
-            <!-- Step 4: サムネイル生成 -->
+            <!-- Step 4: コンテンツ生成 -->
             <div class="wizard-step" id="step4">
                 <div class="step-content">
-                    <h2>🎨 Viral Thumbnail Generator</h2>
-                    <p class="step-description">YouTubeでついついクリックしたくなる戦略的サムネイルを3つ生成</p>
-                    
-                    <div class="viral-info">
-                        <div class="info-card">
-                            <div class="info-icon">🧠</div>
-                            <h4>心理学ベース</h4>
-                            <p>視聴者の心理的トリガーを分析してデザイン決定</p>
-                        </div>
-                        <div class="info-card">
-                            <div class="info-icon">🎯</div>
-                            <h4>動的戦略</h4>
-                            <p>動画内容に応じて最適なアプローチを自動選択</p>
-                        </div>
-                        <div class="info-card">
-                            <div class="info-icon">📊</div>
-                            <h4>YouTube最適化</h4>
-                            <p>クリック率向上のための視覚的最適化</p>
-                        </div>
-                    </div>
-                    
-                    <div class="thumbnail-generation-preview" id="thumbnailPreview" style="display: none;">
-                        <h4>生成された戦略的バリエーション</h4>
-                        <div class="thumbnail-variants" id="thumbnailVariants">
-                            <!-- 動的に生成される3つのバリエーション -->
-                        </div>
-                    </div>
-                    
-                    <div class="generation-status" id="thumbnailStatus" style="display: none;">
-                        <div class="status-indicator">
-                            <div class="pulse-dot"></div>
-                            <span class="status-text">AI戦略分析中...</span>
-                        </div>
-                        <div class="progress-details">
-                            <div class="detail-item">
-                                <span class="detail-icon">🎯</span>
-                                <span class="detail-text" id="analysisStep">動画内容を心理学的に分析中</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <button type="button" class="btn-primary disabled" id="thumbnailBtn">
-                        <span class="btn-icon">🚀</span>
-                        バイラルサムネイル生成開始
-                    </button>
-                </div>
-            </div>
-
-            <!-- Step 5: ブログ生成 -->
-            <div class="wizard-step" id="step5">
-                <div class="step-content">
-                    <h2>🎯 Blog Content Matrix</h2>
-                    <p class="step-description">AI意図解析によるインテリジェントブログ記事を生成</p>
+                    <h2>🎯 Quantum Content Generation</h2>
+                    <p class="step-description">並列次元間で多次元コンテンツ合成を実行します</p>
                     
                     <div class="content-form">
                         <div class="form-group">
@@ -247,86 +196,76 @@
                             <input type="text" id="videoTitle" class="form-input" placeholder="例: VideoAI Studio の使い方解説">
                         </div>
                         
-                        <div class="blog-features">
-                            <div class="feature-item">
-                                <div class="feature-icon">🧠</div>
-                                <h3>意図解析</h3>
-                                <p>発言意図を理解しリライト</p>
+                        <div class="content-types">
+                            <div class="content-type">
+                                <div class="type-icon">🌐</div>
+                                <h3>ブログ記事</h3>
+                                <p>SEO最適化記事</p>
                             </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">🌐</div>
-                                <h3>SEO最適化</h3>
-                                <p>検索エンジン対応HTML</p>
+                            <div class="content-type">
+                                <div class="type-icon">🔮</div>
+                                <h3>X投稿</h3>
+                                <p>5種類バリエーション</p>
                             </div>
-                            <div class="feature-item">
-                                <div class="feature-icon">🔗</div>
-                                <h3>内部リンク</h3>
-                                <p>関連記事への双方向リンク</p>
+                            <div class="content-type">
+                                <div class="type-icon">🚀</div>
+                                <h3>YouTube説明文</h3>
+                                <p>チャプター付き詳細</p>
                             </div>
                         </div>
                         
-                        <button type="button" class="btn-primary" id="blogBtn">
-                            <span class="btn-icon">📝</span>
-                            ブログ記事生成開始
+                        <button type="button" class="btn-primary" id="contentBtn">
+                            <span class="btn-icon">🌟</span>
+                            AIコンテンツ生成開始
                         </button>
                     </div>
                 </div>
             </div>
 
-            <!-- Step 6: X投稿生成 -->
-            <div class="wizard-step" id="step6">
+            <!-- Step 5: サムネイル生成 -->
+            <div class="wizard-step" id="step5">
                 <div class="step-content">
-                    <h2>🔮 Social Media Synthesis</h2>
-                    <p class="step-description">マルチバリエーションX投稿を戦略的に生成</p>
+                    <h2>🎨 Holographic Rendering</h2>
+                    <p class="step-description">次元レンダリングによる量子視覚合成を実行</p>
                     
-                    <div class="x-post-options">
-                        <div class="x-style-card">
-                            <div class="style-icon">⚡</div>
-                            <h3>インパクト型</h3>
-                            <p>注目を集める短文</p>
+                    <div class="thumbnail-options">
+                        <div class="thumbnail-card" data-style="modern">
+                            <div class="thumbnail-preview modern-preview">
+                                <div class="preview-title">VideoAI Studio</div>
+                                <div class="preview-subtitle">モダンデザイン</div>
+                            </div>
+                            <h3>モダン</h3>
+                            <p>次元グラデーション効果</p>
                         </div>
-                        <div class="x-style-card">
-                            <div class="style-icon">📚</div>
-                            <h3>情報提供型</h3>
-                            <p>価値ある情報を要約</p>
+                        
+                        <div class="thumbnail-card" data-style="minimal">
+                            <div class="thumbnail-preview minimal-preview">
+                                <div class="preview-title">VideoAI Studio</div>
+                                <div class="preview-subtitle">シンプル設計</div>
+                            </div>
+                            <h3>ミニマル</h3>
+                            <p>エッセンス抽出プロトコル</p>
                         </div>
-                        <div class="x-style-card">
-                            <div class="style-icon">💡</div>
-                            <h3>洞察共有型</h3>
-                            <p>気づきや学びを表現</p>
-                        </div>
-                        <div class="x-style-card">
-                            <div class="style-icon">❓</div>
-                            <h3>質問喚起型</h3>
-                            <p>エンゲージメント促進</p>
-                        </div>
-                        <div class="x-style-card">
-                            <div class="style-icon">🎯</div>
-                            <h3>行動促進型</h3>
-                            <p>具体的なアクション誘導</p>
+                        
+                        <div class="thumbnail-card" data-style="vibrant">
+                            <div class="thumbnail-preview vibrant-preview">
+                                <div class="preview-title">VideoAI Studio</div>
+                                <div class="preview-subtitle">エネルギーコア</div>
+                            </div>
+                            <h3>ビブラント</h3>
+                            <p>量子カラースペクトラム</p>
                         </div>
                     </div>
                     
-                    <div class="x-features">
-                        <div class="feature-item">
-                            <div class="feature-icon">🔗</div>
-                            <p>ブログ・YouTube連携</p>
-                        </div>
-                        <div class="feature-item">
-                            <div class="feature-icon">📊</div>
-                            <p>エンゲージメント最適化</p>
-                        </div>
-                    </div>
-                    
-                    <button type="button" class="btn-primary" id="xPostBtn">
-                        <span class="btn-icon">🚀</span>
-                        X投稿バリエーション生成
+                    <button type="button" class="btn-primary disabled" id="thumbnailBtn">
+                        <span class="btn-icon">🌈</span>
+                        サムネイル生成開始
                     </button>
                 </div>
             </div>
 
-            <!-- Step 7: エクスポート -->
-            <div class="wizard-step" id="step7">
+            <!-- Step 6: エクスポート -->
+            <div class="wizard-step" id="step6">
                 <div class="step-content">
                     <h2>💫 Quantum Export Portal</h2>
                     <p class="step-description">最終合成完了 • 次元転送準備完了</p>
