@@ -46,7 +46,7 @@ cd video-content-system
 quick_start_windows.bat
 ```
 
-→ ブラウザで **http://localhost:8003** を開くだけ！
+→ ブラウザで **http://localhost:8004** を開くだけ！
 
 ### 1. インストール
 
@@ -84,7 +84,7 @@ source venv/bin/activate  # macOS/Linux
 venv\Scripts\activate     # Windows
 python3 web_app.py
 
-# ブラウザで http://localhost:8003 にアクセス
+# ブラウザで http://localhost:8004 にアクセス
 ```
 
 #### コマンドライン使用

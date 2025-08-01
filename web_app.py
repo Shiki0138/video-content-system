@@ -10,6 +10,7 @@ import asyncio
 from pathlib import Path
 from datetime import datetime
 from typing import Dict, List, Optional
+import argparse
 
 from fastapi import FastAPI, UploadFile, File, Request, Form, HTTPException
 from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
@@ -723,13 +724,20 @@ def generate_captions(transcript_data: Dict, style: str) -> List[Dict]:
     return captions
 
 if __name__ == "__main__":
+    # コマンドライン引数のパース
+    parser = argparse.ArgumentParser(description='VideoAI Studio Web Application')
+    parser.add_argument('--port', type=int, default=8004, help='Port to run the server on (default: 8004)')
+    parser.add_argument('--host', type=str, default='0.0.0.0', help='Host to run the server on (default: 0.0.0.0)')
+    parser.add_argument('--reload', action='store_true', help='Enable auto-reload mode')
+    args = parser.parse_args()
+    
     print("🎬 VideoAI Studio を起動しています...")
-    print("📱 ブラウザで http://localhost:8003 を開いてください")
+    print(f"📱 ブラウザで http://localhost:{args.port} を開いてください")
     
     uvicorn.run(
         "web_app:app",
-        host="0.0.0.0",
-        port=8003,
-        reload=True,
+        host=args.host,
+        port=args.port,
+        reload=args.reload,
         log_level="info"
     )

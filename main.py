@@ -38,7 +38,8 @@ class VideoContentProcessor:
         self.config = config
         self.transcriber = VideoTranscriber(config['whisper'])
         self.generator = ContentGenerator(config['content'])
-        self.thumbnail_creator = ThumbnailCreator(config['thumbnail'])
+        # ThumbnailCreator is now optional since we moved to prompt generation
+        self.thumbnail_creator = ThumbnailCreator(config['thumbnail']) if 'thumbnail' in config else None
         self.jekyll_writer = JekyllWriter(config['jekyll'])
         self.x_post_generator = XPostGenerator(config.get('social_media', {}).get('x', {}))
         self.social_scheduler = SocialMediaScheduler(config.get('social_media', {}))
@@ -80,18 +81,19 @@ class VideoContentProcessor:
                 video_info=self._get_video_info(video_path)
             )
             
-            # Step 3: サムネイル生成（ブログで再利用する可能性があるため先に生成）
-            logger.info("🎨 サムネイル生成中...")
+            # Step 3: サムネイル生成（オプション - 現在は画像プロンプト生成に移行）
             thumbnail_path = None
-            if self.config.get('thumbnail', {}).get('image_provider') == 'runware':
-                # Runware APIでのサムネイル生成は後で行う
-                logger.info("Runwareサムネイル生成は後で実行")
-            else:
-                thumbnail_path = self.thumbnail_creator.create(
-                    title=content['thumbnail']['title'],
-                    subtitle=content['thumbnail']['subtitle'],
-                    output_path=output_dir / "thumbnail.png"
-                )
+            if self.thumbnail_creator and self.config.get('thumbnail', {}).get('enable_generation', False):
+                logger.info("🎨 サムネイル生成中...")
+                if self.config.get('thumbnail', {}).get('image_provider') == 'runware':
+                    # Runware APIでのサムネイル生成は後で行う
+                    logger.info("Runwareサムネイル生成は後で実行")
+                else:
+                    thumbnail_path = self.thumbnail_creator.create(
+                        title=content['thumbnail']['title'],
+                        subtitle=content['thumbnail']['subtitle'],
+                        output_path=output_dir / "thumbnail.png"
+                    )
             
             # Step 4: WordPress/CMSブログコンテンツ作成
             logger.info("📄 ブログコンテンツ作成中...")
@@ -141,7 +143,7 @@ class VideoContentProcessor:
             logger.info(f"🐦 従来形式X投稿: {legacy_twitter_path}")
             
             # Step 6: Runwareサムネイル生成（まだ生成していない場合）
-            if self.config.get('thumbnail', {}).get('image_provider') == 'runware' and not thumbnail_path:
+            if self.thumbnail_creator and self.config.get('thumbnail', {}).get('image_provider') == 'runware' and not thumbnail_path:
                 logger.info("🎨 Runwareでサムネイル生成中...")
                 # TODO: ここでRunware APIを使用したサムネイル生成を実装
                 # 現時点では従来のサムネイル生成を使用
