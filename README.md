@@ -22,6 +22,17 @@
 
 ## 🚀 クイックスタート
 
+### 最速で起動する方法 🎯
+
+```bash
+cd ~/Desktop
+git clone https://github.com/Shiki0138/video-content-system.git
+cd video-content-system
+./quick_start.sh
+```
+
+たったこれだけ！詳細は[QUICKSTART.md](QUICKSTART.md)を参照。
+
 ### 1. インストール
 
 ```bash
