@@ -93,28 +93,25 @@ class VideoContentProcessor:
                     output_path=output_dir / "thumbnail.png"
                 )
             
-            # Step 4: Jekyllブログ記事作成
-            logger.info("📄 Jekyll記事作成中...")
+            # Step 4: WordPress/CMSブログコンテンツ作成
+            logger.info("📄 ブログコンテンツ作成中...")
             
-            # 画像パスを取得
-            featured_image = content['blog'].get('featured_image')
-            section_images = content['blog'].get('section_images')
-            
-            # YouTubeサムネイルをブログで再利用する設定をチェック
-            youtube_thumbnail = None
-            if thumbnail_path and self.config.get('image_optimization', {}).get('reuse_youtube_for_blog', True):
-                youtube_thumbnail = thumbnail_path
-            
-            jekyll_path = self.jekyll_writer.create_post(
+            # WordPress/CMS用のコンテンツ生成
+            from modules.wordpress_content_generator import WordPressContentGenerator
+            wp_generator = WordPressContentGenerator(self.config)
+            wp_outputs = wp_generator.create_content(
                 title=title,
                 content=content['blog'],
                 transcript=transcript_data,
-                output_dir=Path(self.config['output']['jekyll_posts_dir']),
-                featured_image=featured_image,
-                section_images=section_images,
-                generate_images=True,
-                youtube_thumbnail=youtube_thumbnail
+                output_dir=output_dir
             )
+            
+            logger.info(f"📝 ブログコンテンツ: {wp_outputs['blog']}")
+            logger.info(f"🔍 SEOメタデータ: {wp_outputs['meta']}")
+            logger.info(f"🏷️ タグ・カテゴリ: {wp_outputs['taxonomy']}")
+            
+            # 互換性のため変数名を維持
+            jekyll_path = wp_outputs['blog']
             
             # Step 4: YouTube説明文保存
             youtube_path = output_dir / "youtube_description.txt"

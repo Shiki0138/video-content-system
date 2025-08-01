@@ -1,14 +1,16 @@
-# 🎬 Video Content System
+# 🎬 VideoAI Studio
 
-動画から自動的にJekyllブログ、YouTube説明文、X投稿、画像生成プロンプトを作成する完全無料システム
+動画から自動的にブログ記事、YouTube説明文、SNS投稿を生成するAIシステム
+
+📖 **パートナー向けガイド**: [PARTNER_GUIDE.md](PARTNER_GUIDE.md)をご覧ください
 
 ## ✨ 特徴
 
-- **🆓 完全無料**: Whisper（ローカル実行）+ 無料ツールのみ使用
-- **🚀 高速処理**: 10分動画を約2-3分で処理
-- **📝 多様な出力**: Jekyll記事、YouTube説明文、X投稿文、画像生成プロンプト（DALL-E 3/ChatGPT用）
-- **🌐 日本語対応**: 日本語の文字起こし・処理に最適化
-- **⚡ バッチ処理**: 複数動画を一括処理可能
+- **⏱️ 時間短縮**: 4-6時間の作業を13-18分に短縮（95%削減）
+- **🤖 AI自動化**: 文字起こしからコンテンツ生成まで完全自動
+- **📝 オールインワン**: ブログ、YouTube、SNSコンテンツを一括生成
+- **🌐 日本語特化**: 日本語の文字起こし精度と自然な文章生成
+- **🆓 無料で利用可能**: オープンソースで提供
 
 ## 📋 必要要件
 
@@ -20,18 +22,23 @@
 - macOSでは`python`コマンドの代わりに`python3`を使用してください
 - macOS 12以降では仮想環境の使用が必須です
 
-## 🚀 クイックスタート
+## 🚀 5分で始められるクイックスタート
 
-### 最速で起動する方法 🎯
-
+### Mac/Linux の場合
 ```bash
-cd ~/Desktop
-git clone https://github.com/Shiki0138/video-content-system.git
-cd video-content-system
-./quick_start.sh
+# コピー&ペーストで実行
+cd ~/Desktop && git clone https://github.com/Shiki0138/video-content-system.git && cd video-content-system && ./quick_start.sh
 ```
 
-たったこれだけ！詳細は[QUICKSTART.md](QUICKSTART.md)を参照。
+### Windows の場合
+```cmd
+cd Desktop
+git clone https://github.com/Shiki0138/video-content-system.git
+cd video-content-system
+quick_start_windows.bat
+```
+
+→ ブラウザで **http://localhost:8003** を開くだけ！
 
 ### 1. インストール
 
