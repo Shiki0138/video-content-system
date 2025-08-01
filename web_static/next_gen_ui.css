@@ -1582,22 +1582,52 @@ body {
 
 /* レスポンシブ・デザイン - マルチデバイス最適化 */
 @media (max-width: 768px) {
+    body {
+        padding-top: 0; /* スマホでは上部余白不要 */
+    }
+    
+    .app-header {
+        padding: 2rem 1rem;
+    }
+    
     .app-header h1 {
-        font-size: 2.5rem;
+        font-size: 2rem;
+    }
+    
+    .tagline {
+        font-size: 0.9rem;
     }
     
     .progress-steps {
         grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        gap: 0.5rem;
+    }
+    
+    .step {
+        padding: 0.8rem;
+    }
+    
+    .step-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+    
+    .step-label {
+        font-size: 0.75rem;
     }
     
     .main-content {
-        padding: 2rem 1rem;
+        padding: 1.5rem 1rem;
     }
     
     .step-content {
         padding: 2rem 1.5rem;
         border-radius: 20px;
+    }
+    
+    .step-content h2 {
+        font-size: 1.5rem;
     }
     
     .caption-options, .thumbnail-options {
@@ -1606,22 +1636,87 @@ body {
     }
     
     .upload-zone {
-        padding: 3rem 1.5rem;
+        padding: 2rem 1rem;
+    }
+    
+    .upload-zone h3 {
+        font-size: 1.1rem;
+    }
+    
+    .upload-zone p {
+        font-size: 0.9rem;
     }
     
     .wave {
         width: 4px;
         gap: 4px;
     }
+    
+    /* ボタンとフロー表示の改善 */
+    .header-actions {
+        flex-direction: column;
+        gap: 0.5rem;
+        width: 100%;
+    }
+    
+    .btn-config {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .claude-badge {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    /* プログレスステップのフロー表示を縦並びに */
+    .progress-steps {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .step-connector {
+        display: none;
+    }
 }
 
 @media (max-width: 480px) {
     .app-header {
-        padding: 2rem 0;
+        padding: 1.5rem 0.5rem;
+    }
+    
+    .app-header h1 {
+        font-size: 1.5rem;
     }
     
     .progress-container {
-        padding: 1.5rem;
+        padding: 1rem;
+        position: relative;
+        top: auto;
+    }
+    
+    .progress-steps {
+        gap: 0.3rem;
+    }
+    
+    .step {
+        flex-direction: row;
+        padding: 0.5rem;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .step-icon {
+        width: 30px;
+        height: 30px;
+        font-size: 1.2rem;
+        margin-bottom: 0;
+    }
+    
+    .step-label {
+        font-size: 0.7rem;
+        text-align: left;
     }
     
     .step-content {
@@ -1629,8 +1724,40 @@ body {
     }
     
     .btn-primary, .btn-secondary {
-        padding: 1rem 2rem;
-        font-size: 1rem;
+        padding: 0.8rem 1.5rem;
+        font-size: 0.9rem;
+        width: 100%;
+    }
+    
+    .upload-content {
+        padding: 1rem;
+    }
+    
+    .upload-icon {
+        font-size: 2rem;
+    }
+    
+    .modal-content {
+        margin: 1rem;
+        padding: 1.5rem;
+        max-height: 90vh;
+    }
+    
+    /* 7つのステップをコンパクトに表示 */
+    .progress-bar {
+        height: 4px;
+        margin-bottom: 1rem;
+    }
+    
+    /* ファイル選択ボタンを目立たせる */
+    #selectFileBtn {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background: var(--holographic-primary);
+        color: white;
+        border-radius: 20px;
+        text-decoration: none;
+        margin-top: 0.5rem;
     }
 }
 
