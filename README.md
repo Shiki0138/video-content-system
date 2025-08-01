@@ -26,8 +26,16 @@
 
 ### Mac/Linux の場合
 ```bash
-# コピー&ペーストで実行
+# 以下を1行でコピー&ペースト（改行しないでください）
 cd ~/Desktop && git clone https://github.com/Shiki0138/video-content-system.git && cd video-content-system && ./quick_start.sh
+```
+
+または、1つずつ実行：
+```bash
+cd ~/Desktop
+git clone https://github.com/Shiki0138/video-content-system.git
+cd video-content-system
+./quick_start.sh
 ```
 
 ### Windows の場合
