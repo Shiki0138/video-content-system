@@ -1,6 +1,15 @@
 """
-Stable Diffusionを使用したYouTubeサムネイル生成モジュール
-無料で高品質なサムネイル生成を実現
+[DEPRECATED] このモジュールは廃止されました
+
+現在のシステムでは画像の自動生成は行わず、
+DALL-E 3やChatGPT用のプロンプトを生成する方式に変更されました。
+
+代わりに modules/image_prompt_generator.py を使用してください。
+
+---
+
+Stable Diffusionを使用したYouTubeサムネイル生成モジュール（旧バージョン）
+参考のために残していますが、使用は推奨されません。
 """
 
 import logging

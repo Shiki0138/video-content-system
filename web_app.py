@@ -523,45 +523,12 @@ async def get_settings():
 
 @app.post("/api/settings/stable-diffusion")
 async def update_stable_diffusion_settings(request: Request):
-    """Stable Diffusion API設定を更新"""
+    """[DEPRECATED] この機能は廃止されました - 画像生成APIの直接設定は不要です"""
     
-    try:
-        data = await request.json()
-        provider = data.get('provider')
-        settings = data.get('settings', {})
-        
-        if not provider:
-            raise HTTPException(status_code=400, detail="プロバイダーが指定されていません")
-        
-        # 設定の検証
-        validation = config_manager.validate_api_settings(provider, settings)
-        if not validation['valid']:
-            return JSONResponse({
-                "success": False,
-                "errors": validation['errors']
-            })
-        
-        # 設定を更新
-        success = config_manager.update_stable_diffusion_settings(provider, settings)
-        
-        if success:
-            # 設定を再読み込み
-            global CONFIG
-            CONFIG = config_manager.config
-            
-            return JSONResponse({
-                "success": True,
-                "message": f"{provider} API設定を更新しました"
-            })
-        else:
-            return JSONResponse({
-                "success": False,
-                "error": "設定の保存に失敗しました"
-            })
-        
-    except Exception as e:
-        logger.error(f"API設定更新エラー: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+    return JSONResponse({
+        "success": False,
+        "error": "この機能は廃止されました。現在のシステムは画像プロンプトを生成し、手動で画像をアップロードする方式です。"
+    })
 
 @app.post("/api/settings/test-connection")
 async def test_api_connection(request: Request):

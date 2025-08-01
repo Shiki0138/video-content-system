@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 設定管理モジュール
-ユーザーがWebUIでStable Diffusion APIキーを設定・管理するための機能
+ユーザーがWebUIで画像生成APIキーを設定・管理するための機能
 """
 
 import os
@@ -171,47 +171,13 @@ class ConfigManager:
             return False
 
     def update_stable_diffusion_settings(self, provider: str, settings: Dict[str, Any]) -> bool:
-        """Stable Diffusion API設定を更新（ローカル設定ファイルに保存）
+        """[DEPRECATED] この機能は廃止されました
         
-        Args:
-            provider: 'replicate', 'huggingface', 'local'のいずれか
-            settings: API設定辞書
+        現在のシステムでは画像生成APIの直接設定は不要です。
+        代わりに画像プロンプト生成機能を使用してください。
         """
-        try:
-            # ローカル設定ファイルを読み込み（存在しない場合は新規作成）
-            local_config = {}
-            if self.local_config_path.exists():
-                with open(self.local_config_path, 'r', encoding='utf-8') as f:
-                    local_config = yaml.safe_load(f) or {}
-            
-            # 構造を初期化
-            if 'thumbnail' not in local_config:
-                local_config['thumbnail'] = {}
-            if 'api_settings' not in local_config['thumbnail']:
-                local_config['thumbnail']['api_settings'] = {}
-            
-            # プロバイダー設定を更新
-            local_config['thumbnail']['api_settings'][provider] = settings
-            
-            # ローカル設定ファイルに保存
-            success = self._save_local_config(local_config)
-            
-            if success:
-                # メイン設定のデフォルトプロバイダーも更新
-                if 'thumbnail' not in self.config:
-                    self.config['thumbnail'] = {}
-                self.config['thumbnail']['sd_provider'] = provider
-                self._save_config()
-                
-                # 設定を再読み込み
-                self.config = self._load_config()
-                self.logger.info(f"{provider} API設定をローカル設定ファイルに保存しました")
-            
-            return success
-            
-        except Exception as e:
-            self.logger.error(f"API設定更新エラー: {e}")
-            return False
+        self.logger.warning("update_stable_diffusion_settings は廃止されました。画像プロンプト生成機能を使用してください。")
+        return False
     
     def _save_local_config(self, local_config: Dict[str, Any]) -> bool:
         """ローカル設定ファイルを保存"""
@@ -330,24 +296,8 @@ class ConfigManager:
             return {'success': False, 'error': f'接続エラー: {str(e)}'}
     
     def _test_local_connection(self, settings: Dict[str, Any]) -> Dict[str, Any]:
-        """ローカルStable Diffusion接続テスト"""
-        import requests
-        
-        server_url = settings.get('server_url')
-        if not server_url:
-            return {'success': False, 'error': 'サーバーURLが設定されていません'}
-        
-        try:
-            # Automatic1111 WebUIのヘルスチェック
-            response = requests.get(f'{server_url}/internal/ping', timeout=5)
-            
-            if response.status_code == 200:
-                return {'success': True, 'message': 'ローカルStable Diffusion接続成功'}
-            else:
-                return {'success': False, 'error': f'サーバー接続エラー: {response.status_code}'}
-                
-        except requests.exceptions.RequestException as e:
-            return {'success': False, 'error': f'接続エラー: {str(e)}'}
+        """[DEPRECATED] ローカル接続テストは廃止されました"""
+        return {'success': False, 'error': 'この機能は廃止されました。画像プロンプト生成機能を使用してください。'}
     
     def get_provider_status(self) -> Dict[str, Dict[str, Any]]:
         """全プロバイダーの状態を取得"""
