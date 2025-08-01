@@ -16,30 +16,44 @@
 - ffmpeg（動画処理用）
 - 4GB以上のメモリ（推奨: 8GB）
 
+**注意**: macOSでは`python`コマンドの代わりに`python3`を使用してください。
+
 ## 🚀 クイックスタート
 
 ### 1. インストール
 
 ```bash
 # リポジトリをクローン
-git clone [このリポジトリ]
+git clone https://github.com/Shiki0138/video-content-system.git
 cd video-content-system
 
 # セットアップ実行
-python setup.py
+python3 setup.py
+
+# Windowsの場合は python を使用
+# python setup.py
 ```
 
 ### 2. 基本的な使い方
 
+#### Web UIを使用（推奨）
+```bash
+# Webアプリを起動
+python3 web_app.py
+
+# ブラウザで http://localhost:8003 にアクセス
+```
+
+#### コマンドライン使用
 ```bash
 # 単一動画を処理
-python main.py video.mp4 --title "AIツールの使い方"
+python3 main.py video.mp4 --title "AIツールの使い方"
 
 # Whisperモデルを指定
-python main.py video.mp4 --model small
+python3 main.py video.mp4 --model small
 
 # バッチ処理（フォルダ内の全動画）
-python main.py ./videos/ --batch
+python3 main.py ./videos/ --batch
 ```
 
 ### 3. 出力確認
@@ -137,20 +151,20 @@ image_prompt:
 ### 例1: プレゼン動画をブログ化
 
 ```bash
-python main.py presentation.mp4 --title "2024年のAIトレンド解説"
+python3 main.py presentation.mp4 --title "2024年のAIトレンド解説"
 ```
 
 ### 例2: チュートリアル動画をドキュメント化
 
 ```bash
-python main.py tutorial.mp4 --title "Python入門講座 第1回"
+python3 main.py tutorial.mp4 --title "Python入門講座 第1回"
 ```
 
 ### 例3: 複数動画を一括処理
 
 ```bash
 # videosフォルダ内の全動画を処理
-python main.py ./videos/ --batch
+python3 main.py ./videos/ --batch
 ```
 
 ## 🔧 トラブルシューティング
@@ -159,7 +173,7 @@ python main.py ./videos/ --batch
 
 ```bash
 # より小さいモデルを使用
-python main.py video.mp4 --model tiny
+python3 main.py video.mp4 --model tiny
 ```
 
 ### ffmpegが見つからない
@@ -179,7 +193,7 @@ sudo apt install ffmpeg
 
 ```bash
 # より大きいモデルを使用
-python main.py video.mp4 --model medium
+python3 main.py video.mp4 --model medium
 ```
 
 ## 📊 処理時間の目安

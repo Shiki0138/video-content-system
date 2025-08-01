@@ -953,9 +953,10 @@ cd video-content-system</div>
                 <div style="display: inline-block; vertical-align: top; width: calc(100% - 60px);">
                     <div class="step-title">🐍 Python環境の確認</div>
                     <div class="step-desc">Python 3.8以上がインストールされていることを確認します</div>
-                    <div class="code-block">python --version
-# または
-python3 --version</div>
+                    <div class="code-block">python3 --version
+
+# もしPython3がインストールされていない場合（macOS）:
+brew install python3</div>
                 </div>
             </div>
 
@@ -964,7 +965,7 @@ python3 --version</div>
                 <div style="display: inline-block; vertical-align: top; width: calc(100% - 60px);">
                     <div class="step-title">📦 自動セットアップ実行</div>
                     <div class="step-desc">必要なライブラリとWhisperモデルを自動インストールします</div>
-                    <div class="code-block">python setup.py</div>
+                    <div class="code-block">python3 setup.py</div>
                     <div style="font-size: 0.9rem; color: rgba(232, 244, 253, 0.6); margin-top: 10px;">
                         ⚠️ 初回実行時はWhisperモデルのダウンロードで数分かかる場合があります
                     </div>
@@ -987,7 +988,7 @@ code config.yaml</div>
                 <div style="display: inline-block; vertical-align: top; width: calc(100% - 60px);">
                     <div class="step-title">🚀 WebUIを起動</div>
                     <div class="step-desc">ブラウザベースのUIを起動してVideoAI Studioを使用開始</div>
-                    <div class="code-block">python web_app.py</div>
+                    <div class="code-block">python3 web_app.py</div>
                     <div style="margin-top: 15px;">
                         <a href="http://localhost:8003" target="_blank" class="launch-button">
                             🌐 http://localhost:8003 で起動
