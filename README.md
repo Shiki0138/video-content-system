@@ -16,7 +16,9 @@
 - ffmpeg（動画処理用）
 - 4GB以上のメモリ（推奨: 8GB）
 
-**注意**: macOSでは`python`コマンドの代わりに`python3`を使用してください。
+**注意**: 
+- macOSでは`python`コマンドの代わりに`python3`を使用してください
+- macOS 12以降では仮想環境の使用が必須です
 
 ## 🚀 クイックスタート
 
@@ -33,17 +35,27 @@ git clone https://github.com/Shiki0138/video-content-system.git
 cd video-content-system
 
 # セットアップ実行
+# macOSの新しいバージョンの場合（推奨）
+python3 setup_venv.py
+
+# または従来の方法
 python3 setup.py
 
-# Windowsの場合は python を使用
-# python setup.py
+# Windowsの場合
+python setup_venv.py  # または python setup.py
 ```
 
 ### 2. 基本的な使い方
 
 #### Web UIを使用（推奨）
 ```bash
-# Webアプリを起動
+# 仮想環境を使用した場合
+./start.sh    # macOS/Linux
+start.bat     # Windows
+
+# または手動で起動
+source venv/bin/activate  # macOS/Linux
+venv\Scripts\activate     # Windows
 python3 web_app.py
 
 # ブラウザで http://localhost:8003 にアクセス

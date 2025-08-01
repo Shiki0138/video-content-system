@@ -62,13 +62,31 @@ def install_dependencies():
     """依存関係インストール"""
     print("\n📦 依存関係をインストール...")
     
+    # macOSの新しいバージョンでの制限を検出
+    if platform.system() == "Darwin" and sys.version_info >= (3, 11):
+        print("\n⚠️  macOSの新しいバージョンを検出しました")
+        print("🔧 仮想環境を使用したセットアップが必要です")
+        print("\n以下のコマンドを実行してください:")
+        print("\n  python3 setup_venv.py")
+        print("\nこれにより仮想環境が作成され、全ての依存関係がインストールされます。")
+        return False
+    
     # pip アップグレード
-    subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade', 'pip'], check=True)
+    try:
+        subprocess.run([sys.executable, '-m', 'pip', 'install', '--upgrade', 'pip'], check=True)
+    except subprocess.CalledProcessError:
+        print("⚠️  pipのアップグレードに失敗しました")
     
     # requirements.txt からインストール
     if Path('requirements.txt').exists():
-        subprocess.run([sys.executable, '-m', 'pip', 'install', '-r', 'requirements.txt'], check=True)
-        print("✅ 依存関係インストール完了")
+        try:
+            subprocess.run([sys.executable, '-m', 'pip', 'install', '-r', 'requirements.txt'], check=True)
+            print("✅ 依存関係インストール完了")
+        except subprocess.CalledProcessError:
+            print("❌ 依存関係のインストールに失敗しました")
+            print("\n🔧 仮想環境を使用したセットアップを推奨します:")
+            print("  python3 setup_venv.py")
+            return False
     else:
         print("❌ requirements.txt が見つかりません")
         return False
