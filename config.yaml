@@ -59,74 +59,35 @@ content:
     add_hashtags: true
     max_hashtags: 3
     
-# サムネイル設定
-thumbnail:
-  width: 1280
-  height: 720
-  background_color: "#1a1a2e"
-  text_color: "#ffffff"
-  accent_color: "#f39c12"
-  font_size_title: 80
-  font_size_subtitle: 40
+# 画像プロンプト生成設定
+image_prompt:
+  # 生成するプロンプトの種類
+  generate_youtube_thumbnails: true    # YouTubeサムネイル用プロンプト
+  generate_blog_featured: true         # ブログアイキャッチ用プロンプト
+  generate_blog_sections: true         # ブログセクション用プロンプト
   
-  # 画像生成プロバイダー設定（画像タイプ別）
-  image_providers:
-    youtube_thumbnails: "dalle3"    # サムネイル: DALL-E 3（高品質・日本語対応）
-    blog_featured: "dalle3"         # ブログアイキャッチ: DALL-E 3（高品質）
-    blog_sections: "dalle2"         # ブログセクション画像: DALL-E 2（コスト効率）
+  # YouTubeサムネイルスタイル
+  thumbnail_styles:
+    - professional    # プロフェッショナルスタイル
+    - tech           # テック系スタイル
+    - business       # ビジネス系スタイル
   
-  # DALL-E 3設定（サムネイル・アイキャッチ用）
-  dalle3:
-    api_key: ""  # OpenAI APIキーをユーザーが設定
-    default_size: "1792x1024"    # YouTube用最適サイズ
-    quality: "hd"                # standard または hd
-    style: "natural"             # natural または vivid
-    
-    # 生成戦略
-    strategies:
-      youtube_impact: "インパクト型"     # 大きなテキスト、強いビジュアル
-      youtube_curiosity: "好奇心型"      # 疑問符、ミステリアス
-      youtube_authority: "権威型"       # プロフェッショナル、信頼感
+  # プロンプトの品質設定
+  include_composition_details: true    # 構図の詳細を含む
+  include_style_keywords: true         # スタイルキーワードを含む
+  optimize_for_mobile: true            # モバイル表示最適化
   
-  # DALL-E 2設定（ブログセクション画像用 - コスト効率）
-  dalle2:
-    api_key: ""  # OpenAI APIキー（DALL-E 3と同じ）
-    default_size: "1024x1024"    # 正方形（ブログ用）
-    
-    # コスト効率設定
-    cost_per_image: 0.020        # $0.02/image (DALL-E 2)
-    vs_dalle3_savings: "75%"     # DALL-E 3比75%コスト削減
+  # 推奨画像生成サービス（参考情報）
+  recommended_services:
+    dalle3: "YouTubeサムネイル、ブログアイキャッチに推奨"
+    chatgpt: "ChatGPT Plusユーザーは追加料金なし"
+    midjourney: "高品質で芸術的な画像を求める場合"
+    stable_diffusion: "ローカル実行で完全無料"
   
-  # Runware API設定（フォールバック - 高速・低コスト）
-  runware:
-    api_key: ""  # ユーザーが設定
-    use_websocket: true  # WebSocket使用（高速化）
-    models:
-      youtube_impact: "civitai:25694@143906"      # インパクト型サムネイル
-      youtube_curiosity: "civitai:4384@128713"    # 好奇心型サムネイル
-      youtube_authority: "civitai:133005@148204"  # 権威型サムネイル
-      blog_featured: "civitai:25694@143906"       # ブログアイキャッチ
-      blog_section: "civitai:4201@130072"         # ブログセクション画像
-    
-    # 生成設定
-    generation:
-      steps: 25
-      cfg_scale: 7.0
-      negative_prompt: "blurry, low quality, text, watermark, signature, distorted, ugly"
-  
-  # Stable Diffusion設定（フォールバック）
-  stable_diffusion:
-    provider: replicate  # replicate, huggingface, local
-    api_settings:
-      replicate:
-        api_token: ""
-        model: "stability-ai/stable-diffusion:27b93a2413e7f36cd83da926f3656280b2931564ff050bf9575f1fdf9bcd7478"
-      huggingface:
-        api_token: ""
-        model: "stabilityai/stable-diffusion-2-1"
-      local:
-        server_url: "http://localhost:7860"
-        model_path: ""
+  # 旧画像生成API設定（廃止予定）
+  # 現在は画像プロンプトを生成し、ユーザーが好きなサービスで画像を作成します
+  deprecated_api_settings:
+    note: "これらの設定は互換性のために残されていますが、使用されません"
   
   # 画像最適化設定
   image_optimization:

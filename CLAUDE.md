@@ -9,7 +9,7 @@
 - 高品質なブログ記事（HTML形式）
 - YouTube説明文
 - X（Twitter）投稿文
-- サムネイル画像
+- 画像生成プロンプト（DALL-E 3/ChatGPT用）
 
 ### 技術スタック
 - Python 3.13
@@ -56,7 +56,7 @@ video-content-system/
 │   ├── content_generator.py  # コンテンツ生成制御
 │   ├── jekyll_writer.py      # Jekyll/HTML記事生成
 │   ├── transcriber.py        # Whisper音声認識
-│   └── thumbnail_generator.py # サムネイル生成
+│   └── image_prompt_generator.py # 画像プロンプト生成
 ├── BLOG_GENERATION_RULES.md  # ブログ生成ルール（必読）
 └── BLOG_OPTIMIZATION_PHILOSOPHY.md # 最適化の哲学
 ```
