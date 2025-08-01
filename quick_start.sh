@@ -17,6 +17,8 @@ if [ ! -f "venv/.installed" ]; then
     echo "📦 必要なパッケージをインストール中..."
     pip install --upgrade pip
     pip install -r requirements.txt
+    # FastAPIが確実にインストールされるよう追加
+    pip install fastapi uvicorn python-multipart aiofiles
     touch venv/.installed
     echo "✅ インストール完了"
 fi
