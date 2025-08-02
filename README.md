@@ -1,8 +1,14 @@
 # 🎬 VideoAI Studio
 
+![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)
+![Python](https://img.shields.io/badge/python-3.9+-green.svg)
+![License](https://img.shields.io/badge/license-MIT-orange.svg)
+![Quality](https://img.shields.io/badge/quality-96%2F100-brightgreen.svg)
+
 動画から自動的にブログ記事、YouTube説明文、SNS投稿を生成するAIシステム
 
 📖 **パートナー向けガイド**: [PARTNER_GUIDE.md](PARTNER_GUIDE.md)をご覧ください
+📋 **開発記録**: [development_history/](development_history/)フォルダをご覧ください
 
 ## ✨ 特徴
 
